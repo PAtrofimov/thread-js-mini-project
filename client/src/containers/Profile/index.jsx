@@ -1,12 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { getUserImgLink } from 'src/helpers/imageHelper';
-import {
-  Grid,
-  Image,
-  Input
-} from 'semantic-ui-react';
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { getUserImgLink } from "src/helpers/imageHelper";
+import { Grid, Image, Input } from "semantic-ui-react";
 
 const Profile = ({ user }) => (
   <Grid container textAlign="center" style={{ paddingTop: 30 }}>
@@ -36,17 +32,15 @@ const Profile = ({ user }) => (
 );
 
 Profile.propTypes = {
-  user: PropTypes.objectOf(PropTypes.any)
+  user: PropTypes.objectOf(PropTypes.any),
 };
 
 Profile.defaultProps = {
-  user: {}
+  user: {},
 };
 
-const mapStateToProps = rootState => ({
-  user: rootState.profile.user
+const mapStateToProps = (rootState) => ({
+  user: rootState.profile.user,
 });
 
-export default connect(
-  mapStateToProps
-)(Profile);
+export default connect(mapStateToProps)(Profile);

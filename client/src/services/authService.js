@@ -1,19 +1,19 @@
 import callWebApi from 'src/helpers/webApiHelper';
 
-export const login = async request => {
+export const login = async (request) => {
   const response = await callWebApi({
-    endpoint: '/api/auth/login',
-    type: 'POST',
-    request
+    endpoint: "/api/auth/login",
+    type: "POST",
+    request,
   });
   return response.json();
 };
 
-export const registration = async request => {
+export const registration = async (request) => {
   const response = await callWebApi({
-    endpoint: '/api/auth/register',
-    type: 'POST',
-    request
+    endpoint: "/api/auth/register",
+    type: "POST",
+    request,
   });
   return response.json();
 };
@@ -21,8 +21,8 @@ export const registration = async request => {
 export const getCurrentUser = async () => {
   try {
     const response = await callWebApi({
-      endpoint: '/api/auth/user',
-      type: 'GET'
+      endpoint: "/api/auth/user",
+      type: "GET",
     });
     return response.json();
   } catch (e) {

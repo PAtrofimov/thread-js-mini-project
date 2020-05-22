@@ -1,42 +1,42 @@
 import callWebApi from 'src/helpers/webApiHelper';
 
-export const getAllPosts = async filter => {
+export const getAllPosts = async (filter) => {
   const response = await callWebApi({
-    endpoint: '/api/posts',
-    type: 'GET',
-    query: filter
+    endpoint: "/api/posts",
+    type: "GET",
+    query: filter,
   });
   return response.json();
 };
 
-export const addPost = async request => {
+export const addPost = async (request) => {
   const response = await callWebApi({
-    endpoint: '/api/posts',
-    type: 'POST',
-    request
+    endpoint: "/api/posts",
+    type: "POST",
+    request,
   });
   return response.json();
 };
 
-export const getPost = async id => {
+export const getPost = async (id) => {
   const response = await callWebApi({
     endpoint: `/api/posts/${id}`,
-    type: 'GET'
+    type: "GET",
   });
   return response.json();
 };
 
-export const likePost = async postId => {
+export const likePost = async (postId) => {
   const response = await callWebApi({
-    endpoint: '/api/posts/react',
-    type: 'PUT',
+    endpoint: "/api/posts/react",
+    type: "PUT",
     request: {
       postId,
-      isLike: true
-    }
+      isLike: true,
+    },
   });
   return response.json();
 };
 
 // should be replaced by approppriate function
-export const getPostByHash = async hash => getPost(hash);
+export const getPostByHash = async (hash) => getPost(hash);

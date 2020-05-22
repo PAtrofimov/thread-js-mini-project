@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import validator from 'validator';
-import { Form, Button, Segment } from 'semantic-ui-react';
+import PropTypes from "prop-types";
+import validator from "validator";
+import { Form, Button, Segment } from "semantic-ui-react";
 
 const LoginForm = ({ login }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
 
-  const emailChanged = data => {
+  const emailChanged = (data) => {
     setEmail(data);
     setIsEmailValid(true);
   };
 
-  const passwordChanged = data => {
+  const passwordChanged = (data) => {
     setPassword(data);
     setIsPasswordValid(true);
   };
@@ -44,7 +44,7 @@ const LoginForm = ({ login }) => {
           placeholder="Email"
           type="email"
           error={!isEmailValid}
-          onChange={ev => emailChanged(ev.target.value)}
+          onChange={(ev) => emailChanged(ev.target.value)}
           onBlur={() => setIsEmailValid(validator.isEmail(email))}
         />
         <Form.Input
@@ -54,10 +54,17 @@ const LoginForm = ({ login }) => {
           placeholder="Password"
           type="password"
           error={!isPasswordValid}
-          onChange={ev => passwordChanged(ev.target.value)}
+          onChange={(ev) => passwordChanged(ev.target.value)}
           onBlur={() => setIsPasswordValid(Boolean(password))}
         />
-        <Button type="submit" color="teal" fluid size="large" loading={isLoading} primary>
+        <Button
+          type="submit"
+          color="teal"
+          fluid
+          size="large"
+          loading={isLoading}
+          primary
+        >
           Login
         </Button>
       </Segment>
@@ -66,7 +73,7 @@ const LoginForm = ({ login }) => {
 };
 
 LoginForm.propTypes = {
-  login: PropTypes.func.isRequired
+  login: PropTypes.func.isRequired,
 };
 
 export default LoginForm;

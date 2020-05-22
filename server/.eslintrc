@@ -12,6 +12,7 @@
     },
     "rules": {
         "comma-dangle": ["error", "never"],
+        "linebreak-style": ["error", "windows"],
         "object-curly-newline": "off",
         "arrow-parens": ["error", "as-needed"],
         "prefer-promise-reject-errors": "off",
