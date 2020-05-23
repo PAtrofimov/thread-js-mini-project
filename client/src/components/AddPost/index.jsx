@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+/* eslint-disable */
+
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Form, Button, Icon, Image, Segment } from "semantic-ui-react";
 

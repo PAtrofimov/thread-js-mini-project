@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { Image, Header } from "semantic-ui-react";
 

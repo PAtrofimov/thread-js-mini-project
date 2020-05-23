@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   SET_ALL_POSTS,
   LOAD_MORE_POSTS,

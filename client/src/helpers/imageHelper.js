@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const getUserImgLink = (image) =>
   image
     ? image.link

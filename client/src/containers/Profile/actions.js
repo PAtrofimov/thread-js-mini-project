@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as authService from 'src/services/authService';
 import { SET_USER } from "./actionTypes";
 

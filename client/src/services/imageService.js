@@ -1,3 +1,4 @@
+/* eslint-disable */
 import callWebApi from 'src/helpers/webApiHelper';
 
 export const uploadImage = async (image) => {

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { SET_USER } from './actionTypes';
 
 export default (state = {}, action) => {
