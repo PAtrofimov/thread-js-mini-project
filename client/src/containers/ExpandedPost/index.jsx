@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
@@ -6,8 +7,9 @@ import { Modal, Comment as CommentUI, Header } from "semantic-ui-react";
 import moment from "moment";
 import {
   likePost,
+  dislikePost,
   toggleExpandedPost,
-  addComment,
+  addComment
 } from "src/containers/Thread/actions";
 import Post from "src/components/Post";
 import Comment from "src/components/Comment";
@@ -18,8 +20,9 @@ const ExpandedPost = ({
   post,
   sharePost,
   likePost: like,
+  dislikePost: dislike,
   toggleExpandedPost: toggle,
-  addComment: add,
+  addComment: add
 }) => (
   <Modal dimmer="blurring" centered={false} open onClose={() => toggle()}>
     {post ? (
@@ -27,6 +30,7 @@ const ExpandedPost = ({
         <Post
           post={post}
           likePost={like}
+          dislikePost={dislike}
           toggleExpandedPost={toggle}
           sharePost={sharePost}
         />
@@ -51,6 +55,7 @@ ExpandedPost.propTypes = {
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   toggleExpandedPost: PropTypes.func.isRequired,
   likePost: PropTypes.func.isRequired,
+  dislikePost: PropTypes.func.isRequired,
   addComment: PropTypes.func.isRequired,
   sharePost: PropTypes.func.isRequired,
 };
@@ -59,7 +64,7 @@ const mapStateToProps = (rootState) => ({
   post: rootState.posts.expandedPost,
 });
 
-const actions = { likePost, toggleExpandedPost, addComment };
+const actions = { likePost, dislikePost, toggleExpandedPost, addComment };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 

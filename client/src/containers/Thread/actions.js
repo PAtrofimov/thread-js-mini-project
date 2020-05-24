@@ -1,4 +1,5 @@
-import * as postService from 'src/services/postService';
+/* eslint-disable */
+import * as postService from "src/services/postService";
 import * as commentService from "src/services/commentService";
 import {
   ADD_POST,
@@ -60,13 +61,18 @@ export const toggleExpandedPost = (postId) => async (dispatch) => {
 };
 
 export const likePost = (postId) => async (dispatch, getRootState) => {
-  const { id } = await postService.likePost(postId);
+  const { id, createdAt, updatedAt} = await postService.likePost(postId);
   const diff = id ? 1 : -1; // if ID exists then the post was liked, otherwise - like was removed
 
-  const mapLikes = (post) => ({
-    ...post,
-    likeCount: Number(post.likeCount) + diff, // diff is taken from the current closure
-  });
+  const mapLikes = (post) => {
+    // if modified then dislikeCount changes
+    const dislikeCount = createdAt && createdAt !== updatedAt ? +post.dislikeCount - diff : +post.dislikeCount;
+    return {
+      ...post,
+      dislikeCount,
+      likeCount: +post.likeCount + diff, // diff is taken from the current closure
+    };
+  };
 
   const {
     posts: { posts, expandedPost },
@@ -79,6 +85,34 @@ export const likePost = (postId) => async (dispatch, getRootState) => {
 
   if (expandedPost && expandedPost.id === postId) {
     dispatch(setExpandedPostAction(mapLikes(expandedPost)));
+  }
+};
+
+export const dislikePost = (postId) => async (dispatch, getRootState) => {
+  const { id, createdAt, updatedAt } = await postService.dislikePost(postId);
+  const diff = id ? 1 : -1; // if ID exists then the post was liked, otherwise - like was removed
+
+  const mapdislikes = (post) => {
+    // if modified then likeCount changes
+    const likeCount = createdAt && createdAt !== updatedAt ? +post.likeCount - diff : +post.likeCount;
+    return {
+      ...post,
+      likeCount,
+      dislikeCount: Number(post.dislikeCount) + diff, // diff is taken from the current closure
+    };
+  };
+
+  const {
+    posts: { posts, expandedPost },
+  } = getRootState();
+  const updated = posts.map((post) =>
+    post.id !== postId ? post : mapdislikes(post)
+  );
+
+  dispatch(setPostsAction(updated));
+
+  if (expandedPost && expandedPost.id === postId) {
+    dispatch(setExpandedPostAction(mapdislikes(expandedPost)));
   }
 };
 

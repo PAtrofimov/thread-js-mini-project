@@ -1,11 +1,18 @@
-import React from 'react';
+/* eslint-disable */
+import React from "react";
 import PropTypes from "prop-types";
 import { Card, Image, Label, Icon } from "semantic-ui-react";
 import moment from "moment";
 
 import styles from "./styles.module.scss";
 
-const Post = ({ post, likePost, toggleExpandedPost, sharePost }) => {
+const Post = ({
+  post,
+  likePost,
+  dislikePost,
+  toggleExpandedPost,
+  sharePost
+}) => {
   const {
     id,
     image,
@@ -14,7 +21,7 @@ const Post = ({ post, likePost, toggleExpandedPost, sharePost }) => {
     likeCount,
     dislikeCount,
     commentCount,
-    createdAt,
+    createdAt
   } = post;
   const date = moment(createdAt).fromNow();
   return (
@@ -23,7 +30,8 @@ const Post = ({ post, likePost, toggleExpandedPost, sharePost }) => {
       <Card.Content>
         <Card.Meta>
           <span className="date">
-            posted by {user.username}
+            posted by
+            {user.username}
             {" - "}
             {date}
           </span>
@@ -41,7 +49,13 @@ const Post = ({ post, likePost, toggleExpandedPost, sharePost }) => {
           <Icon name="thumbs up" />
           {likeCount}
         </Label>
-        <Label basic size="small" as="a" className={styles.toolbarBtn}>
+        <Label
+          basic
+          size="small"
+          as="a"
+          className={styles.toolbarBtn}
+          onClick={() => dislikePost(id)}
+        >
           <Icon name="thumbs down" />
           {dislikeCount}
         </Label>
@@ -72,6 +86,7 @@ const Post = ({ post, likePost, toggleExpandedPost, sharePost }) => {
 Post.propTypes = {
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   likePost: PropTypes.func.isRequired,
+  dislikePost: PropTypes.func.isRequired,
   toggleExpandedPost: PropTypes.func.isRequired,
   sharePost: PropTypes.func.isRequired,
 };
