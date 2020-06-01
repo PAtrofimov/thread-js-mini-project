@@ -19,6 +19,7 @@ import Spinner from "src/components/Spinner";
 const ExpandedPost = ({
   post,
   sharePost,
+  updatePost,
   likePost: like,
   dislikePost: dislike,
   toggleExpandedPost: toggle,
@@ -33,6 +34,7 @@ const ExpandedPost = ({
           dislikePost={dislike}
           toggleExpandedPost={toggle}
           sharePost={sharePost}
+          updatePost={updatePost}
         />
         <CommentUI.Group style={{ maxWidth: "100%" }}>
           <Header as="h3" dividing>
@@ -58,6 +60,7 @@ ExpandedPost.propTypes = {
   dislikePost: PropTypes.func.isRequired,
   addComment: PropTypes.func.isRequired,
   sharePost: PropTypes.func.isRequired,
+  updatePost: PropTypes.func.isRequired, 
 };
 
 const mapStateToProps = (rootState) => ({

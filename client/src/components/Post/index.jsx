@@ -11,7 +11,9 @@ const Post = ({
   likePost,
   dislikePost,
   toggleExpandedPost,
-  sharePost
+  toggleUpdatedPost,
+  updatePost,
+  sharePost,
 }) => {
   const {
     id,
@@ -21,7 +23,7 @@ const Post = ({
     likeCount,
     dislikeCount,
     commentCount,
-    createdAt
+    createdAt,
   } = post;
   const date = moment(createdAt).fromNow();
   return (
@@ -78,6 +80,19 @@ const Post = ({
         >
           <Icon name="share alternate" />
         </Label>
+
+        <Label
+          basic
+          size="small"
+          as="a"
+          className={styles.toolbarBtn}
+          onClick={() => {
+            toggleUpdatedPost(id);
+            updatePost(id);
+          }}
+        >
+          <Icon name="edit" />
+        </Label>
       </Card.Content>
     </Card>
   );
@@ -88,7 +103,9 @@ Post.propTypes = {
   likePost: PropTypes.func.isRequired,
   dislikePost: PropTypes.func.isRequired,
   toggleExpandedPost: PropTypes.func.isRequired,
+  toggleUpdatedPost: PropTypes.func.isRequired,
   sharePost: PropTypes.func.isRequired,
+  updatePost: PropTypes.func.isRequired,
 };
 
 export default Post;
