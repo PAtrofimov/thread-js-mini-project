@@ -19,6 +19,15 @@ export const addPost = async (request) => {
   return response.json();
 };
 
+export const updatePost = async (request) => {
+  const response = await callWebApi({
+    endpoint: `/api/posts/${request.id}`,
+    type: "PUT",
+    request,
+  });
+  return response.json();
+};
+
 export const getPost = async (id) => {
   const response = await callWebApi({
     endpoint: `/api/posts/${id}`,
