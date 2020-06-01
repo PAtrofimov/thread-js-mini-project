@@ -3,8 +3,10 @@ import * as postService from "src/services/postService";
 import * as commentService from "src/services/commentService";
 import {
   ADD_POST,
+  UPDATE_POST,
   LOAD_MORE_POSTS,
   SET_ALL_POSTS,
+  SET_UPDATED_POST,
   SET_EXPANDED_POST,
 } from "./actionTypes";
 
@@ -23,8 +25,18 @@ const addPostAction = (post) => ({
   post,
 });
 
+const updatePostAction = (post) => ({
+  type: UPDATE_POST,
+  post,
+});
+
 const setExpandedPostAction = (post) => ({
   type: SET_EXPANDED_POST,
+  post,
+});
+
+const setUpdatedPostAction = (post) => ({
+  type: SET_UPDATED_POST,
   post,
 });
 
@@ -55,9 +67,21 @@ export const addPost = (post) => async (dispatch) => {
   dispatch(addPostAction(newPost));
 };
 
+export const updatePost = (post) => async (dispatch) => {
+  const { id } = await postService.updatePost(post);
+  
+  const editedPost = await postService.getPost(id);
+  dispatch(updatePostAction(editedPost));
+};
+
 export const toggleExpandedPost = (postId) => async (dispatch) => {
   const post = postId ? await postService.getPost(postId) : undefined;
   dispatch(setExpandedPostAction(post));
+};
+
+export const toggleUpdatedPost = (postId) => async (dispatch) => {
+  const post = postId ? await postService.getPost(postId) : undefined;
+  dispatch(setUpdatedPostAction(post));
 };
 
 export const likePost = (postId) => async (dispatch, getRootState) => {
