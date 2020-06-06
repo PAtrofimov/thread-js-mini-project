@@ -12,6 +12,7 @@ const Post = ({
   dislikePost,
   toggleExpandedPost,
   toggleUpdatedPost,
+  toggleDeletedPost,
   sharePost,
 }) => {
   const {
@@ -89,6 +90,16 @@ const Post = ({
         >
           <Icon name="edit" />
         </Label>
+
+        <Label
+          basic
+          size="small"
+          as="a"
+          className={styles.toolbarBtn}
+          onClick={() => toggleDeletedPost(id)}
+        >
+          <Icon name="delete" />
+        </Label>
       </Card.Content>
     </Card>
   );
@@ -100,6 +111,7 @@ Post.propTypes = {
   dislikePost: PropTypes.func.isRequired,
   toggleExpandedPost: PropTypes.func.isRequired,
   toggleUpdatedPost: PropTypes.func.isRequired,
+  toggleDeletedPost: PropTypes.func.isRequired,
   sharePost: PropTypes.func.isRequired,
 };
 
