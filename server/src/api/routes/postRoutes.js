@@ -23,6 +23,11 @@ router
       return res.send(post);
     })
     .catch(next))
+  .delete('/:id', (req, res, next) => postService.deleteById(req.params.id)
+    .then(result => {
+      return res.send({result});
+    })
+    .catch(next))
   .put('/react', (req, res, next) => postService.setReaction(req.user.id, req.body)
     .then(reaction => {
       if (reaction.post && (reaction.post.userId !== req.user.id)) {
