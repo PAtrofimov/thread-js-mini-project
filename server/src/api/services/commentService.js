@@ -5,4 +5,8 @@ export const create = (userId, comment) => commentRepository.create({
   userId
 });
 
+export const updateById = (id, comment) => commentRepository.updateById(id, {
+  ...comment
+});
+
 export const getCommentById = id => commentRepository.getCommentById(id);
