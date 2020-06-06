@@ -28,19 +28,22 @@ export default (state = {}, action) => {
         posts: [action.post, ...state.posts],
       };
     case UPDATE_POST:
-      const { id, text, image } = action.post;
+      const { id, body, image } = action.post;
 
-      const mapEdited = (post) => ({ ...post, text, image });
+      const mapEdited = (post) => ({ ...post, body, image });
 
       const posts = state.posts.map((post) => {
         {
-          return post.id == !id ? post : mapEdited(post);
+          return post.id === id ? mapEdited(post) : post;
         }
       });
+
+      const expandedPost = state.expandedPost && state.expandedPost.id === id ? action.post : state.expandedPost;
 
       return {
         ...state,
         posts,
+        expandedPost,
       };
     case SET_UPDATED_POST:
       return {

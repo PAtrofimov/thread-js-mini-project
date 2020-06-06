@@ -9,6 +9,7 @@ import {
   likePost,
   dislikePost,
   toggleExpandedPost,
+  toggleUpdatedPost,
   addComment
 } from "src/containers/Thread/actions";
 import Post from "src/components/Post";
@@ -23,9 +24,10 @@ const ExpandedPost = ({
   likePost: like,
   dislikePost: dislike,
   toggleExpandedPost: toggle,
+  toggleUpdatedPost: toggleUpdated,
   addComment: add
 }) => (
-  <Modal dimmer="blurring" centered={false} open onClose={() => toggle()}>
+  <Modal dimmer="blurring" centered={false} open onClose={() => {toggle();}}>
     {post ? (
       <Modal.Content>
         <Post
@@ -33,6 +35,7 @@ const ExpandedPost = ({
           likePost={like}
           dislikePost={dislike}
           toggleExpandedPost={toggle}
+          toggleUpdatedPost={toggleUpdated}
           sharePost={sharePost}
           updatePost={updatePost}
         />
@@ -56,6 +59,7 @@ const ExpandedPost = ({
 ExpandedPost.propTypes = {
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   toggleExpandedPost: PropTypes.func.isRequired,
+  toggleUpdatedPost: PropTypes.func.isRequired,
   likePost: PropTypes.func.isRequired,
   dislikePost: PropTypes.func.isRequired,
   addComment: PropTypes.func.isRequired,
@@ -67,7 +71,7 @@ const mapStateToProps = (rootState) => ({
   post: rootState.posts.expandedPost,
 });
 
-const actions = { likePost, dislikePost, toggleExpandedPost, addComment };
+const actions = { likePost, dislikePost, toggleExpandedPost, addComment, toggleUpdatedPost,};
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 
