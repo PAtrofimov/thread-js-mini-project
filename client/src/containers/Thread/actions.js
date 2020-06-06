@@ -10,6 +10,7 @@ import {
   SET_DELETED_POST,
   SET_UPDATED_POST,
   SET_EXPANDED_POST,
+  SET_UPDATED_COMMENT,
 } from "./actionTypes";
 
 const setPostsAction = (posts) => ({
@@ -50,6 +51,11 @@ const setUpdatedPostAction = (post) => ({
 const setDeletedPostAction = (post) => ({
   type: SET_DELETED_POST,
   post,
+});
+
+const setUpdatedCommentAction = (comment) => ({
+  type: SET_UPDATED_COMMENT,
+  comment,
 });
 
 export const loadPosts = (filter) => async (dispatch) => {
@@ -109,6 +115,10 @@ export const toggleDeletedPost = (postId) => async (dispatch) => {
   dispatch(setDeletedPostAction(post));
 };
 
+export const toggleUpdatedComment = (comId) => async (dispatch) => {
+  const comment = comId ? await commentService.getComment(comId) : undefined;
+  dispatch(setUpdatedCommentAction(comment));
+};
 
 export const likePost = (postId) => async (dispatch, getRootState) => {
   const { id, createdAt, updatedAt } = await postService.likePost(postId);
@@ -189,3 +199,33 @@ export const addComment = (request) => async (dispatch, getRootState) => {
     dispatch(setExpandedPostAction(mapComments(expandedPost)));
   }
 };
+
+export const updateComment = (request) => async (dispatch, getRootState) => {
+  const { id } = await commentService.updateComment(request);
+  const comment = await commentService.getComment(id);
+
+  const mapComments = (post) => { 
+    const {comments=[]} = post;
+    const newComments = comments.map(it => {
+      return (it.id === id) ? comment: it;
+    });
+
+    return {
+    ...post,
+    comments: [...newComments],
+  }};
+
+  const {
+    posts: { posts, expandedPost },
+  } = getRootState();
+  const updated = posts.map((post) =>
+    post.id !== comment.postId ? post : mapComments(post)
+  );
+
+  dispatch(setPostsAction(updated));
+
+  if (expandedPost && expandedPost.id === comment.postId) {
+    dispatch(setExpandedPostAction(mapComments(expandedPost)));
+  }
+};
+

@@ -8,6 +8,7 @@ import {
   SET_UPDATED_POST,
   SET_DELETED_POST,
   SET_EXPANDED_POST,
+  SET_UPDATED_COMMENT,
 } from "./actionTypes";
 
 export default (state = {}, action) => {
@@ -69,6 +70,11 @@ export default (state = {}, action) => {
       return {
         ...state,
         expandedPost: action.post,
+      };
+    case SET_UPDATED_COMMENT:
+      return {
+        ...state,
+        updatedComment: action.comment,
       };
     default:
       return state;
