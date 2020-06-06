@@ -10,6 +10,15 @@ export const addComment = async (request) => {
   return response.json();
 };
 
+export const updateComment = async (request) => {
+  const response = await callWebApi({
+    endpoint: `/api/comments/${request.id}`,
+    type: "PUT",
+    request,
+  });
+  return response.json();
+};
+
 export const getComment = async (id) => {
   const response = await callWebApi({
     endpoint: `/api/comments/${id}`,
