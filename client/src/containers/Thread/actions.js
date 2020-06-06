@@ -4,8 +4,10 @@ import * as commentService from "src/services/commentService";
 import {
   ADD_POST,
   UPDATE_POST,
+  DELETE_POST,
   LOAD_MORE_POSTS,
   SET_ALL_POSTS,
+  SET_DELETED_POST,
   SET_UPDATED_POST,
   SET_EXPANDED_POST,
 } from "./actionTypes";
@@ -30,6 +32,11 @@ const updatePostAction = (post) => ({
   post,
 });
 
+const deletePostAction = (post) => ({
+  type: DELETE_POST,
+  post,
+});
+
 const setExpandedPostAction = (post) => ({
   type: SET_EXPANDED_POST,
   post,
@@ -37,6 +44,11 @@ const setExpandedPostAction = (post) => ({
 
 const setUpdatedPostAction = (post) => ({
   type: SET_UPDATED_POST,
+  post,
+});
+
+const setDeletedPostAction = (post) => ({
+  type: SET_DELETED_POST,
   post,
 });
 
@@ -67,9 +79,17 @@ export const addPost = (post) => async (dispatch) => {
   dispatch(addPostAction(newPost));
 };
 
+export const deletePost = (postId) => async (dispatch) => {
+  const post = await postService.getPost(postId);
+  const {result} = await postService.deletePost(postId);
+  if (result === 1) {
+     dispatch(deletePostAction(post));
+  }
+};
+
 export const updatePost = (post) => async (dispatch) => {
   const { id } = await postService.updatePost(post);
-  
+
   const editedPost = await postService.getPost(id);
   dispatch(updatePostAction(editedPost));
 };
@@ -84,8 +104,14 @@ export const toggleUpdatedPost = (postId) => async (dispatch) => {
   dispatch(setUpdatedPostAction(post));
 };
 
+export const toggleDeletedPost = (postId) => async (dispatch) => {
+  const post = postId ? await postService.getPost(postId) : undefined;
+  dispatch(setDeletedPostAction(post));
+};
+
+
 export const likePost = (postId) => async (dispatch, getRootState) => {
-  const { id, createdAt, updatedAt} = await postService.likePost(postId);
+  const { id, createdAt, updatedAt } = await postService.likePost(postId);
   const diff = id ? 1 : -1; // if ID exists then the post was liked, otherwise - like was removed
 
   const mapLikes = (post) => {
