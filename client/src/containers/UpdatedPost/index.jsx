@@ -6,21 +6,18 @@ import { Form, Button, Icon, Image, Modal } from "semantic-ui-react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { toggleUpdatedPost } from "src/containers/Thread/actions";
-
 import styles from "./styles.module.scss";
 
-const UpdatedPost = ({ postId:id, post, close, updatePost, uploadImage }) => {
+const UpdatedPost = ({ post, updatePost, uploadImage, toggleUpdatedPost }) => {
   const [body, setBody] = useState(post?.body);
-  const [image, setImage] = useState({ imageId: post?.imageId, imageLink: post?.image?.link});
+  const [image, setImage] = useState({ imageId: post?.imageId, imageLink: post?.image?.link });
   const [isUploading, setIsUploading] = useState(false);
 
   const handleUpdatePost = async () => {
     if (!body) {
       return;
     }
-    await updatePost({ id, imageId: image?.imageId, body });
-    //setBody("");
-    //setImage(undefined);
+    await updatePost({ id: post?.id, imageId: image?.imageId, body });
   };
 
   const handleUploadFile = async ({ target }) => {
@@ -37,7 +34,7 @@ const UpdatedPost = ({ postId:id, post, close, updatePost, uploadImage }) => {
   };
 
   return (
-    <Modal open onClose={close}>
+    <Modal open onClose={()=> {toggleUpdatedPost();}}>
       <Modal.Header className={styles.header}>
         <span>Update Post</span>
       </Modal.Header>
