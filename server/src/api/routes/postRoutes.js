@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Router } from 'express';
 import * as postService from '../services/postService';
 
@@ -13,6 +15,11 @@ router
   .post('/', (req, res, next) => postService.create(req.user.id, req.body)
     .then(post => {
       req.io.emit('new_post', post); // notify all users that a new post was created
+      return res.send(post);
+    })
+    .catch(next))
+  .put('/:id', (req, res, next) => postService.updateById(req.params.id, req.body)
+    .then(post => {
       return res.send(post);
     })
     .catch(next))

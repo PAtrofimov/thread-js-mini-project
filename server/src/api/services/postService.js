@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import postRepository from '../../data/repositories/postRepository';
 import postReactionRepository from '../../data/repositories/postReactionRepository';
 
@@ -8,6 +10,10 @@ export const getPostById = id => postRepository.getPostById(id);
 export const create = (userId, post) => postRepository.create({
   ...post,
   userId
+});
+
+export const updateById = (id, post) => postRepository.updateById(id, {
+  ...post
 });
 
 export const setReaction = async (userId, { postId, isLike = true }) => {
