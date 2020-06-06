@@ -3,8 +3,10 @@ import {
   SET_ALL_POSTS,
   LOAD_MORE_POSTS,
   ADD_POST,
+  DELETE_POST,
   UPDATE_POST,
   SET_UPDATED_POST,
+  SET_DELETED_POST,
   SET_EXPANDED_POST,
 } from "./actionTypes";
 
@@ -45,10 +47,23 @@ export default (state = {}, action) => {
         posts,
         expandedPost,
       };
+    case DELETE_POST:
+      const { id: deletedPostId } = action.post;
+      return {
+        ...state,
+        posts: state.posts.filter(post => post.id !== deletedPostId),
+        expandedPost: state.expandedPost && state.expandedPost.id === deletedPostId ? undefined : state.expandedPost,
+        updatedPost: state.updatedPost && state.updatedPost.id === deletedPostId ? undefined : state.updatedPost,
+      };
     case SET_UPDATED_POST:
       return {
         ...state,
         updatedPost: action.post,
+      };
+    case SET_DELETED_POST:
+      return {
+        ...state,
+        deletedPost: action.post,
       };
     case SET_EXPANDED_POST:
       return {
