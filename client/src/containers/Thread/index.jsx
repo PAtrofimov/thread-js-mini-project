@@ -108,7 +108,7 @@ const Thread = ({
           close={() => setSharedPostId(undefined)}
         />
       )}
-      {updatedPost && (
+      {updatedPost && updatedPost.userId === userId && (
         <UpdatedPost
           uploadImage={uploadImage}
           updatePost={changePost}
