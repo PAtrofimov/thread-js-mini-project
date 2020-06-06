@@ -10,6 +10,7 @@ import {
   dislikePost,
   toggleExpandedPost,
   toggleUpdatedPost,
+  toggleDeletedPost,
   addComment
 } from "src/containers/Thread/actions";
 import Post from "src/components/Post";
@@ -20,11 +21,11 @@ import Spinner from "src/components/Spinner";
 const ExpandedPost = ({
   post,
   sharePost,
-  updatePost,
   likePost: like,
   dislikePost: dislike,
   toggleExpandedPost: toggle,
   toggleUpdatedPost: toggleUpdated,
+  toggleDeletedPost: toggleDeleted,
   addComment: add
 }) => (
   <Modal dimmer="blurring" centered={false} open onClose={() => {toggle();}}>
@@ -36,8 +37,8 @@ const ExpandedPost = ({
           dislikePost={dislike}
           toggleExpandedPost={toggle}
           toggleUpdatedPost={toggleUpdated}
+          toggleDeletedPost={toggleDeleted}
           sharePost={sharePost}
-          updatePost={updatePost}
         />
         <CommentUI.Group style={{ maxWidth: "100%" }}>
           <Header as="h3" dividing>
@@ -60,18 +61,18 @@ ExpandedPost.propTypes = {
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   toggleExpandedPost: PropTypes.func.isRequired,
   toggleUpdatedPost: PropTypes.func.isRequired,
+  toggleDeletedPost: PropTypes.func.isRequired,
   likePost: PropTypes.func.isRequired,
   dislikePost: PropTypes.func.isRequired,
   addComment: PropTypes.func.isRequired,
   sharePost: PropTypes.func.isRequired,
-  updatePost: PropTypes.func.isRequired, 
-};
+ };
 
 const mapStateToProps = (rootState) => ({
   post: rootState.posts.expandedPost,
 });
 
-const actions = { likePost, dislikePost, toggleExpandedPost, addComment, toggleUpdatedPost,};
+const actions = { likePost, dislikePost, toggleExpandedPost, addComment, toggleUpdatedPost, toggleDeletedPost,};
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 
