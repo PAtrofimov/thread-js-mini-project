@@ -7,7 +7,7 @@ import * as imageService from "src/services/imageService";
 import ExpandedPost from "src/containers/ExpandedPost";
 import Post from "src/components/Post";
 import AddPost from "src/components/AddPost";
-import UpdatedPost from "src/components/UpdatedPost";
+import UpdatedPost from "src/containers/UpdatedPost";
 import SharedPostLink from "src/components/SharedPostLink";
 import { Checkbox, Loader } from "semantic-ui-react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -48,8 +48,6 @@ const Thread = ({
   const [sharedPostId, setSharedPostId] = useState(undefined);
   const [showOwnPosts, setShowOwnPosts] = useState(false);
 
-  const [updatedPostId, setUpdatedPostId] = useState(undefined);
-
   const toggleShowOwnPosts = () => {
     setShowOwnPosts(!showOwnPosts);
     postsFilter.userId = showOwnPosts ? undefined : userId;
@@ -66,10 +64,6 @@ const Thread = ({
 
   const sharePost = (id) => {
     setSharedPostId(id);
-  };
-
-  const updatePostId = (id) => {
-    setUpdatedPostId(id);
   };
 
   const uploadImage = (file) => imageService.uploadImage(file);
@@ -101,13 +95,12 @@ const Thread = ({
             toggleExpandedPost={toggle}
             toggleUpdatedPost={toggleUpdated}
             sharePost={sharePost}
-            updatePost={updatePostId}
             key={post.id}
           />
         ))}
       </InfiniteScroll>
       {expandedPost && (
-        <ExpandedPost sharePost={sharePost} updatePost={updatePostId} />
+        <ExpandedPost sharePost={sharePost} updatePost={changePost} />
       )}
       {sharedPostId && (
         <SharedPostLink
@@ -115,14 +108,10 @@ const Thread = ({
           close={() => setSharedPostId(undefined)}
         />
       )}
-      {updatedPostId && (
+      {updatedPost && (
         <UpdatedPost
-          post={updatedPost}
-          updatePost={changePost}
           uploadImage={uploadImage}
-          postId={updatedPostId}
           updatePost={changePost}
-          close={() => {setUpdatedPostId(undefined);}}
         />
       )}
     </div>
@@ -149,7 +138,7 @@ Thread.defaultProps = {
   posts: [],
   hasMorePosts: true,
   expandedPost: undefined,
-  updatedPost:  undefined,
+  updatedPost: undefined,
   userId: undefined,
 };
 
