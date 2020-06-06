@@ -12,7 +12,6 @@ const Post = ({
   dislikePost,
   toggleExpandedPost,
   toggleUpdatedPost,
-  updatePost,
   sharePost,
 }) => {
   const {
@@ -86,10 +85,7 @@ const Post = ({
           size="small"
           as="a"
           className={styles.toolbarBtn}
-          onClick={() => {
-            toggleUpdatedPost(id);
-            updatePost(id);
-          }}
+          onClick={() => toggleUpdatedPost(id)}
         >
           <Icon name="edit" />
         </Label>
@@ -105,7 +101,6 @@ Post.propTypes = {
   toggleExpandedPost: PropTypes.func.isRequired,
   toggleUpdatedPost: PropTypes.func.isRequired,
   sharePost: PropTypes.func.isRequired,
-  updatePost: PropTypes.func.isRequired,
 };
 
 export default Post;
