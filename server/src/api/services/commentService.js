@@ -10,3 +10,5 @@ export const updateById = (id, comment) => commentRepository.updateById(id, {
 });
 
 export const getCommentById = id => commentRepository.getCommentById(id);
+
+export const deleteById = id => commentRepository.deleteById(id);

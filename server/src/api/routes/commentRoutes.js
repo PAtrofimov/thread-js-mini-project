@@ -12,6 +12,9 @@ router
     .catch(next))
   .put('/:id', (req, res, next) => commentService.updateById(req.params.id, req.body)
     .then(comment => res.send(comment))
+    .catch(next))
+  .delete('/:id', (req, res, next) => commentService.deleteById(req.params.id)
+    .then(result => res.send({ result }))
     .catch(next));
 
 export default router;
