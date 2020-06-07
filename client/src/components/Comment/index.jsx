@@ -7,26 +7,37 @@ import { getUserImgLink } from "src/helpers/imageHelper";
 
 import styles from "./styles.module.scss";
 
-const Comment = ({ comment: { body, createdAt, user, id }, toggleUpdatedComment: toggle }) => (
-  <Fragment>
-    <CommentUI className={styles.comment}>
-      <CommentUI.Avatar src={getUserImgLink(user.image)} />
-      <CommentUI.Content>
-        <CommentUI.Author as="a">{user.username}</CommentUI.Author>
-        <CommentUI.Metadata>{moment(createdAt).fromNow()}</CommentUI.Metadata>
-        <CommentUI.Text>{body}</CommentUI.Text>
-      </CommentUI.Content>
-    </CommentUI>
-    <Label
-      basic
-      size="small"
-      as="a"
-      className={styles.toolbarBtn}
-      onClick={() => toggle(id)}
-    >
-      <Icon name="edit" />
-    </Label>
-  </Fragment>
+const Comment = ({ comment: { body, createdAt, user, id }, toggleUpdatedComment: toggle, toggleDeletedComment: toggleDel }) => (
+
+  <CommentUI className={styles.comment}>
+    <CommentUI.Avatar src={getUserImgLink(user.image)} />
+    <CommentUI.Content>
+      <CommentUI.Author as="a">{user.username}</CommentUI.Author>
+      <CommentUI.Metadata>{moment(createdAt).fromNow()}</CommentUI.Metadata>
+      <CommentUI.Text>{body}</CommentUI.Text>
+      <CommentUI.Actions>
+        <Label
+          basic
+          size="small"
+          as="a"
+          className={styles.toolbarBtn}
+          onClick={() => toggle(id)}
+        >
+          <Icon name="edit" />
+        </Label>
+        <Label
+          basic
+          size="small"
+          as="a"
+          className={styles.toolbarBtn}
+          onClick={() => toggleDel(id)}
+        >
+          <Icon name="delete" />
+        </Label>
+      </CommentUI.Actions>
+    </CommentUI.Content>
+  </CommentUI>
+
 );
 
 Comment.propTypes = {

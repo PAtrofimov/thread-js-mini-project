@@ -13,13 +13,16 @@ import {
   toggleDeletedPost,
   addComment,
   updateComment,
+  deleteComment,
   toggleUpdatedComment,
+  toggleDeletedComment,
 } from "src/containers/Thread/actions";
 import Post from "src/components/Post";
 import Comment from "src/components/Comment";
 import AddComment from "src/components/AddComment";
 import Spinner from "src/components/Spinner";
 import UpdatedComment from 'src/containers/UpdatedComment';
+import DeletedComment from 'src/containers/DeletedComment';
 
 const ExpandedPost = ({
   post,
@@ -30,9 +33,12 @@ const ExpandedPost = ({
   toggleUpdatedPost: toggleUpdated,
   toggleDeletedPost: toggleDeleted,
   toggleUpdatedComment: toggleUpdatedCom,
+  toggleDeletedComment: toggleDeletedCom,
   addComment: add,
   updateComment: update,
-  comment: updatedComment,
+  deleteComment: deleteCom,
+  updatedComment,
+  deletedComment,
   userId
 }) => (
     <Modal dimmer="blurring" centered={false} open onClose={() => { toggle(); }}>
@@ -54,11 +60,14 @@ const ExpandedPost = ({
             {post.comments &&
               post.comments
                 .sort((c1, c2) => moment(c1.createdAt).diff(c2.createdAt))
-                .map((comment) => <Comment key={comment.id} comment={comment} toggleUpdatedComment={toggleUpdatedCom} />)}
+                .map((comment) => <Comment key={comment.id} comment={comment} toggleUpdatedComment={toggleUpdatedCom} toggleDeletedComment={toggleDeletedCom} />)}
             <AddComment postId={post.id} addComment={add} />
 
             {updatedComment && updatedComment.userId === userId && (
               <UpdatedComment updateComment={update} />)}
+
+            {deletedComment && deletedComment.userId === userId && (
+              <DeletedComment deleteComment={deleteCom} />)}
 
           </CommentUI.Group>
         </Modal.Content>
@@ -71,7 +80,8 @@ const ExpandedPost = ({
 ExpandedPost.defaultProps = {
   post: undefined,
   userId: undefined,
-  comment: undefined,
+  updatedComment: undefined,
+  deletedComment: undefined,
 };
 
 ExpandedPost.propTypes = {
@@ -80,20 +90,23 @@ ExpandedPost.propTypes = {
   toggleUpdatedPost: PropTypes.func.isRequired,
   toggleDeletedPost: PropTypes.func.isRequired,
   toggleUpdatedComment: PropTypes.func.isRequired,
+  toggleDeletedComment: PropTypes.func.isRequired,
   likePost: PropTypes.func.isRequired,
   dislikePost: PropTypes.func.isRequired,
   addComment: PropTypes.func.isRequired,
   updateComment: PropTypes.func.isRequired,
+  deleteComment: PropTypes.func.isRequired,
   sharePost: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (rootState) => ({
   post: rootState.posts.expandedPost,
-  comment: rootState.posts.updatedComment,
+  updatedComment: rootState.posts.updatedComment,
+  deletedComment: rootState.posts.deletedComment,
   userId: rootState.profile.user.id,
 });
 
-const actions = { likePost, dislikePost, toggleExpandedPost, addComment, toggleUpdatedPost, toggleDeletedPost, updateComment, toggleUpdatedComment };
+const actions = { likePost, dislikePost, toggleExpandedPost, addComment, toggleUpdatedPost, toggleDeletedPost, updateComment, deleteComment, toggleUpdatedComment, toggleDeletedComment };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 
