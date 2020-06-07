@@ -11,6 +11,7 @@ import {
   SET_UPDATED_POST,
   SET_EXPANDED_POST,
   SET_UPDATED_COMMENT,
+  SET_DELETED_COMMENT,
 } from "./actionTypes";
 
 const setPostsAction = (posts) => ({
@@ -58,6 +59,11 @@ const setUpdatedCommentAction = (comment) => ({
   comment,
 });
 
+const setDeletedCommentAction = (comment) => ({
+  type: SET_DELETED_COMMENT,
+  comment,
+});
+
 export const loadPosts = (filter) => async (dispatch) => {
   const posts = await postService.getAllPosts(filter);
   dispatch(setPostsAction(posts));
@@ -87,9 +93,9 @@ export const addPost = (post) => async (dispatch) => {
 
 export const deletePost = (postId) => async (dispatch) => {
   const post = await postService.getPost(postId);
-  const {result} = await postService.deletePost(postId);
+  const { result } = await postService.deletePost(postId);
   if (result === 1) {
-     dispatch(deletePostAction(post));
+    dispatch(deletePostAction(post));
   }
 };
 
@@ -118,6 +124,11 @@ export const toggleDeletedPost = (postId) => async (dispatch) => {
 export const toggleUpdatedComment = (comId) => async (dispatch) => {
   const comment = comId ? await commentService.getComment(comId) : undefined;
   dispatch(setUpdatedCommentAction(comment));
+};
+
+export const toggleDeletedComment = (comId) => async (dispatch) => {
+  const comment = comId ? await commentService.getComment(comId) : undefined;
+  dispatch(setDeletedCommentAction(comment));
 };
 
 export const likePost = (postId) => async (dispatch, getRootState) => {
@@ -204,16 +215,44 @@ export const updateComment = (request) => async (dispatch, getRootState) => {
   const { id } = await commentService.updateComment(request);
   const comment = await commentService.getComment(id);
 
-  const mapComments = (post) => { 
-    const {comments=[]} = post;
+  const mapComments = (post) => {
+    const { comments = [] } = post;
     const newComments = comments.map(it => {
-      return (it.id === id) ? comment: it;
+      return (it.id === id) ? comment : it;
     });
 
     return {
+      ...post,
+      comments: [...newComments],
+    }
+  };
+
+  const {
+    posts: { posts, expandedPost },
+  } = getRootState();
+  const updated = posts.map((post) =>
+    post.id !== comment.postId ? post : mapComments(post)
+  );
+
+  dispatch(setPostsAction(updated));
+
+  if (expandedPost && expandedPost.id === comment.postId) {
+    dispatch(setExpandedPostAction(mapComments(expandedPost)));
+  }
+};
+
+export const deleteComment = (comId) => async (dispatch, getRootState) => {
+  const comment = await commentService.getComment(comId);
+  const { result } = await commentService.deleteComment(comId);
+  if (result !== 1) {
+    return;
+  }
+
+  const mapComments = (post) => ({
     ...post,
-    comments: [...newComments],
-  }};
+    commentCount: +post.commentCount - 1,
+    comments: [...((post.comments || []).filter(it => it.id !== comId))], // comment is taken from the current closure
+  });
 
   const {
     posts: { posts, expandedPost },
