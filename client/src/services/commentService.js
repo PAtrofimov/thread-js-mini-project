@@ -34,3 +34,29 @@ export const deleteComment = async (id) => {
   });
   return response.json();
 };
+
+export const likeComment = async (commentId, postId) => {
+  const response = await callWebApi({
+    endpoint: "/api/comments/react",
+    type: "PUT",
+    request: {
+      commentId,
+      postId,
+      isLike: true,
+    },
+  });
+  return response.json();
+};
+
+export const dislikeComment = async (commentId, postId) => {
+  const response = await callWebApi({
+    endpoint: "/api/comments/react",
+    type: "PUT",
+    request: {
+      commentId,
+      postId,
+      isLike: false,
+    },
+  });
+  return response.json();
+};
