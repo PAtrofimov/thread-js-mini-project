@@ -5,7 +5,8 @@
   },
   "extends": [
     "react-app",
-    "airbnb"
+    "airbnb",
+    "prettier"
   ],
   "globals": {
     "Atomics": "readonly",
