@@ -1,6 +1,6 @@
 /* eslint-disable */
-import * as postService from "src/services/postService";
-import * as commentService from "src/services/commentService";
+import * as postService from 'src/services/postService';
+import * as commentService from 'src/services/commentService';
 import {
   ADD_POST,
   UPDATE_POST,
@@ -11,57 +11,57 @@ import {
   SET_UPDATED_POST,
   SET_EXPANDED_POST,
   SET_UPDATED_COMMENT,
-  SET_DELETED_COMMENT,
-} from "./actionTypes";
+  SET_DELETED_COMMENT
+} from './actionTypes';
 
 const setPostsAction = (posts) => ({
   type: SET_ALL_POSTS,
-  posts,
+  posts
 });
 
 const addMorePostsAction = (posts) => ({
   type: LOAD_MORE_POSTS,
-  posts,
+  posts
 });
 
 const addPostAction = (post) => ({
   type: ADD_POST,
-  post,
+  post
 });
 
 const updatePostAction = (post) => ({
   type: UPDATE_POST,
-  post,
+  post
 });
 
 const deletePostAction = (post) => ({
   type: DELETE_POST,
-  post,
+  post
 });
 
 const setExpandedPostAction = (post) => ({
   type: SET_EXPANDED_POST,
-  post,
+  post
 });
 
 const setUpdatedPostAction = (post) => ({
   type: SET_UPDATED_POST,
-  post,
+  post
 });
 
 const setDeletedPostAction = (post) => ({
   type: SET_DELETED_POST,
-  post,
+  post
 });
 
 const setUpdatedCommentAction = (comment) => ({
   type: SET_UPDATED_COMMENT,
-  comment,
+  comment
 });
 
 const setDeletedCommentAction = (comment) => ({
   type: SET_DELETED_COMMENT,
-  comment,
+  comment
 });
 
 export const loadPosts = (filter) => async (dispatch) => {
@@ -71,7 +71,7 @@ export const loadPosts = (filter) => async (dispatch) => {
 
 export const loadMorePosts = (filter) => async (dispatch, getRootState) => {
   const {
-    posts: { posts },
+    posts: { posts }
   } = getRootState();
   const loadedPosts = await postService.getAllPosts(filter);
   const filteredPosts = loadedPosts.filter(
@@ -121,13 +121,17 @@ export const toggleDeletedPost = (postId) => async (dispatch) => {
   dispatch(setDeletedPostAction(post));
 };
 
-export const toggleUpdatedComment = (comId) => async (dispatch) => {
-  const comment = comId ? await commentService.getComment(comId) : undefined;
+export const toggleUpdatedComment = (commentId) => async (dispatch) => {
+  const comment = commentId
+    ? await commentService.getComment(commentId)
+    : undefined;
   dispatch(setUpdatedCommentAction(comment));
 };
 
-export const toggleDeletedComment = (comId) => async (dispatch) => {
-  const comment = comId ? await commentService.getComment(comId) : undefined;
+export const toggleDeletedComment = (commentId) => async (dispatch) => {
+  const comment = commentId
+    ? await commentService.getComment(commentId)
+    : undefined;
   dispatch(setDeletedCommentAction(comment));
 };
 
@@ -137,16 +141,19 @@ export const likePost = (postId) => async (dispatch, getRootState) => {
 
   const mapLikes = (post) => {
     // if modified then dislikeCount changes
-    const dislikeCount = createdAt && createdAt !== updatedAt ? +post.dislikeCount - diff : +post.dislikeCount;
+    const dislikeCount =
+      createdAt && createdAt !== updatedAt
+        ? +post.dislikeCount - diff
+        : +post.dislikeCount;
     return {
       ...post,
       dislikeCount,
-      likeCount: +post.likeCount + diff, // diff is taken from the current closure
+      likeCount: +post.likeCount + diff // diff is taken from the current closure
     };
   };
 
   const {
-    posts: { posts, expandedPost },
+    posts: { posts, expandedPost }
   } = getRootState();
   const updated = posts.map((post) =>
     post.id !== postId ? post : mapLikes(post)
@@ -165,16 +172,108 @@ export const dislikePost = (postId) => async (dispatch, getRootState) => {
 
   const mapdislikes = (post) => {
     // if modified then likeCount changes
-    const likeCount = createdAt && createdAt !== updatedAt ? +post.likeCount - diff : +post.likeCount;
+    const likeCount =
+      createdAt && createdAt !== updatedAt
+        ? +post.likeCount - diff
+        : +post.likeCount;
     return {
       ...post,
       likeCount,
-      dislikeCount: Number(post.dislikeCount) + diff, // diff is taken from the current closure
+      dislikeCount: Number(post.dislikeCount) + diff // diff is taken from the current closure
     };
   };
 
   const {
-    posts: { posts, expandedPost },
+    posts: { posts, expandedPost }
+  } = getRootState();
+  const updated = posts.map((post) =>
+    post.id !== postId ? post : mapdislikes(post)
+  );
+
+  dispatch(setPostsAction(updated));
+
+  if (expandedPost && expandedPost.id === postId) {
+    dispatch(setExpandedPostAction(mapdislikes(expandedPost)));
+  }
+};
+
+export const likeComment = (commentId, postId) => async (
+  dispatch,
+  getRootState
+) => {
+  const {
+    id,
+    createdAt,
+    updatedAt
+  } = await commentService.likeComment(commentId, postId);
+  const diff = id ? 1 : -1; // if ID exists then the comment was liked, otherwise - like was removed
+
+  const mapLikes = (post) => {
+    const comments = (post.comments || []).map((it) => {
+      if (it.id === commentId) {
+        const dislikeCount =
+          createdAt && createdAt !== updatedAt
+            ? +(it.dislikeCount || 0) - diff
+            : +(it.dislikeCount || 0);
+        return { ...it, dislikeCount, likeCount: +(it.likeCount || 0) + diff };
+      }
+      return it;
+    });
+
+    return {
+      ...post,
+      comments
+    };
+  };
+
+  const {
+    posts: { posts, expandedPost }
+  } = getRootState();
+  const updated = posts.map((post) =>
+    post.id !== postId ? post : mapLikes(post)
+  );
+
+  dispatch(setPostsAction(updated));
+
+  if (expandedPost && expandedPost.id === postId) {
+    dispatch(setExpandedPostAction(mapLikes(expandedPost)));
+  }
+};
+
+export const dislikeComment = (commentId, postId) => async (
+  dispatch,
+  getRootState
+) => {
+  const { id, createdAt, updatedAt } = await commentService.dislikeComment(
+    commentId, postId
+  );
+  const diff = id ? 1 : -1; // if ID exists then the post was disliked, otherwise - dislike was removed
+
+  const mapdislikes = (post) => {
+    // if modified then likeCount changes
+    const comments = (post.comments || []).map((it) => {
+      if (it.id === commentId) {
+        const likeCount =
+          createdAt && createdAt !== updatedAt
+            ? +(it.likeCount || 0) - diff
+            : +(it.likeCount || 0);
+        return {
+          ...it,
+          likeCount,
+          dislikeCount: +(it.dislikeCount || 0) + diff
+        };
+      }
+      return it;
+    });
+
+    return {
+      ...post,
+      comments
+    };
+  };
+
+  const {
+    posts: { posts, expandedPost }
   } = getRootState();
   const updated = posts.map((post) =>
     post.id !== postId ? post : mapdislikes(post)
@@ -194,11 +293,11 @@ export const addComment = (request) => async (dispatch, getRootState) => {
   const mapComments = (post) => ({
     ...post,
     commentCount: Number(post.commentCount) + 1,
-    comments: [...(post.comments || []), comment], // comment is taken from the current closure
+    comments: [...(post.comments || []), comment] // comment is taken from the current closure
   });
 
   const {
-    posts: { posts, expandedPost },
+    posts: { posts, expandedPost }
   } = getRootState();
   const updated = posts.map((post) =>
     post.id !== comment.postId ? post : mapComments(post)
@@ -217,18 +316,18 @@ export const updateComment = (request) => async (dispatch, getRootState) => {
 
   const mapComments = (post) => {
     const { comments = [] } = post;
-    const newComments = comments.map(it => {
-      return (it.id === id) ? comment : it;
+    const newComments = comments.map((it) => {
+      return it.id === id ? comment : it;
     });
 
     return {
       ...post,
-      comments: [...newComments],
-    }
+      comments: [...newComments]
+    };
   };
 
   const {
-    posts: { posts, expandedPost },
+    posts: { posts, expandedPost }
   } = getRootState();
   const updated = posts.map((post) =>
     post.id !== comment.postId ? post : mapComments(post)
@@ -241,9 +340,9 @@ export const updateComment = (request) => async (dispatch, getRootState) => {
   }
 };
 
-export const deleteComment = (comId) => async (dispatch, getRootState) => {
-  const comment = await commentService.getComment(comId);
-  const { result } = await commentService.deleteComment(comId);
+export const deleteComment = (commentId) => async (dispatch, getRootState) => {
+  const comment = await commentService.getComment(commentId);
+  const { result } = await commentService.deleteComment(commentId);
   if (result !== 1) {
     return;
   }
@@ -251,11 +350,11 @@ export const deleteComment = (comId) => async (dispatch, getRootState) => {
   const mapComments = (post) => ({
     ...post,
     commentCount: +post.commentCount - 1,
-    comments: [...((post.comments || []).filter(it => it.id !== comId))], // comment is taken from the current closure
+    comments: [...(post.comments || []).filter((it) => it.id !== commentId)] // comment is taken from the current closure
   });
 
   const {
-    posts: { posts, expandedPost },
+    posts: { posts, expandedPost }
   } = getRootState();
   const updated = posts.map((post) =>
     post.id !== comment.postId ? post : mapComments(post)
@@ -267,4 +366,3 @@ export const deleteComment = (comId) => async (dispatch, getRootState) => {
     dispatch(setExpandedPostAction(mapComments(expandedPost)));
   }
 };
-
