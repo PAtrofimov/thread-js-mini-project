@@ -29,6 +29,7 @@ import styles from "./styles.module.scss";
 
 const postsFilter = {
   userId: undefined,
+  conditionType: undefined,
   from: 0,
   count: 10,
 };
@@ -53,11 +54,22 @@ const Thread = ({
 }) => {
   const [sharedPostId, setSharedPostId] = useState(undefined);
   const [showOwnPosts, setShowOwnPosts] = useState(false);
+  const [hideOwnPosts, setHideOwnPosts] = useState(false);
 
   const toggleShowOwnPosts = () => {
     setShowOwnPosts(!showOwnPosts);
     postsFilter.userId = showOwnPosts ? undefined : userId;
     postsFilter.from = 0;
+    postsFilter.conditionType = undefined;
+    load(postsFilter);
+    postsFilter.from = postsFilter.count; // for the next scroll
+  };
+
+  const toggleHideOwnPosts = () => {
+    setHideOwnPosts(!hideOwnPosts);
+    postsFilter.userId = hideOwnPosts ? undefined : userId;
+    postsFilter.from = 0;
+    postsFilter.conditionType = hideOwnPosts ? undefined : 'ne';
     load(postsFilter);
     postsFilter.from = postsFilter.count; // for the next scroll
   };
@@ -84,7 +96,15 @@ const Thread = ({
           toggle
           label="Show only my posts"
           checked={showOwnPosts}
+          disabled={hideOwnPosts}
           onChange={toggleShowOwnPosts}
+        />
+          <Checkbox
+          toggle
+          label="Hide my posts"
+          checked={hideOwnPosts}
+          disabled={showOwnPosts}
+          onChange={toggleHideOwnPosts}
         />
       </div>
       <InfiniteScroll

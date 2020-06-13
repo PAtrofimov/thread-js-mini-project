@@ -1,4 +1,6 @@
+import { Op } from 'sequelize';
 import sequelize from '../db/connection';
+
 import {
   PostModel,
   CommentModel,
@@ -9,27 +11,35 @@ import {
 } from '../models/index';
 import BaseRepository from './baseRepository';
 
-const likeCase = bool => `CASE WHEN "postReactions"."isLike" = ${bool} THEN 1 ELSE 0 END`;
-const likeCaseComments = bool => `CASE WHEN "commentReactions"."isLike" = ${bool} THEN 1 ELSE 0 END`;
+const likeCase = bool =>
+  `CASE WHEN "postReactions"."isLike" = ${bool} THEN 1 ELSE 0 END`;
+const likeCaseComments = bool =>
+  `CASE WHEN "commentReactions"."isLike" = ${bool} THEN 1 ELSE 0 END`;
 
 class PostRepository extends BaseRepository {
   async getPosts(filter) {
-    const { from: offset, count: limit, userId } = filter;
+    const { from: offset, count: limit, userId, conditionType = 'eq' } = filter;
 
     const where = {};
     if (userId) {
-      Object.assign(where, { userId });
+      Object.assign(where, { userId: { [Op[`${conditionType}`]]: userId } });
     }
 
     return this.model.findAll({
       where,
       attributes: {
         include: [
-          [sequelize.literal(`(SELECT COUNT(*)
+          [
+            sequelize.literal(`(SELECT COUNT(*)
                         FROM "comments" as "comment"
-                        WHERE "post"."id" = "comment"."postId")`), 'commentCount'],
+                        WHERE "post"."id" = "comment"."postId")`),
+            'commentCount'
+          ],
           [sequelize.fn('SUM', sequelize.literal(likeCase(true))), 'likeCount'],
-          [sequelize.fn('SUM', sequelize.literal(likeCase(false))), 'dislikeCount']
+          [
+            sequelize.fn('SUM', sequelize.literal(likeCase(false))),
+            'dislikeCount'
+          ]
         ]
       },
       include: [
@@ -72,11 +82,17 @@ class PostRepository extends BaseRepository {
       where: { id },
       attributes: {
         include: [
-          [sequelize.literal(`(SELECT COUNT(*)
+          [
+            sequelize.literal(`(SELECT COUNT(*)
           FROM "comments" as "comment"
-          WHERE "post"."id" = "comment"."postId")`), 'commentCount'],
+          WHERE "post"."id" = "comment"."postId")`),
+            'commentCount'
+          ],
           [sequelize.fn('SUM', sequelize.literal(likeCase(true))), 'likeCount'],
-          [sequelize.fn('SUM', sequelize.literal(likeCase(false))), 'dislikeCount']
+          [
+            sequelize.fn('SUM', sequelize.literal(likeCase(false))),
+            'dislikeCount'
+          ]
         ]
       },
       include: [
@@ -84,9 +100,15 @@ class PostRepository extends BaseRepository {
           model: CommentModel,
           attributes: {
             include: [
-              [sequelize.fn('SUM', sequelize.literal(likeCaseComments(true))), 'likeCount'],
-              [sequelize.fn('SUM', sequelize.literal(likeCaseComments(false))), 'dislikeCount']
-           ]
+              [
+                sequelize.fn('SUM', sequelize.literal(likeCaseComments(true))),
+                'likeCount'
+              ],
+              [
+                sequelize.fn('SUM', sequelize.literal(likeCaseComments(false))),
+                'dislikeCount'
+              ]
+            ]
           },
           include: {
             model: UserModel,
@@ -116,7 +138,7 @@ class PostRepository extends BaseRepository {
         {
           model: CommentReactionModel,
           attributes: []
-        } 
+        }
       ]
     });
   }
