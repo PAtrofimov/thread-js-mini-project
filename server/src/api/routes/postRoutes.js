@@ -18,11 +18,6 @@ router
       return res.send(post);
     })
     .catch(next))
-  .put('/:id', (req, res, next) => postService.updateById(req.params.id, req.body)
-    .then(post => {
-      return res.send(post);
-    })
-    .catch(next))
   .delete('/:id', (req, res, next) => postService.deleteById(req.params.id)
     .then(result => {
       return res.send({result});
@@ -35,6 +30,11 @@ router
         req.io.to(reaction.post.userId).emit('like', 'Your post was liked!');
       }
       return res.send(reaction);
+    })
+    .catch(next))
+  .put('/:id', (req, res, next) => postService.updateById(req.params.id, req.body)
+    .then(post => {
+      return res.send(post);
     })
     .catch(next));
 
