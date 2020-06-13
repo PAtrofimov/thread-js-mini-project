@@ -1,16 +1,20 @@
 import sequelize from '../db/connection';
-import { PostModel, CommentModel, UserModel, ImageModel, PostReactionModel } from '../models/index';
+import {
+  PostModel,
+  CommentModel,
+  UserModel,
+  ImageModel,
+  CommentReactionModel,
+  PostReactionModel
+} from '../models/index';
 import BaseRepository from './baseRepository';
 
 const likeCase = bool => `CASE WHEN "postReactions"."isLike" = ${bool} THEN 1 ELSE 0 END`;
+const likeCaseComments = bool => `CASE WHEN "commentReactions"."isLike" = ${bool} THEN 1 ELSE 0 END`;
 
 class PostRepository extends BaseRepository {
   async getPosts(filter) {
-    const {
-      from: offset,
-      count: limit,
-      userId
-    } = filter;
+    const { from: offset, count: limit, userId } = filter;
 
     const where = {};
     if (userId) {
@@ -21,35 +25,33 @@ class PostRepository extends BaseRepository {
       where,
       attributes: {
         include: [
-          [sequelize.literal(`
-                        (SELECT COUNT(*)
+          [sequelize.literal(`(SELECT COUNT(*)
                         FROM "comments" as "comment"
                         WHERE "post"."id" = "comment"."postId")`), 'commentCount'],
           [sequelize.fn('SUM', sequelize.literal(likeCase(true))), 'likeCount'],
           [sequelize.fn('SUM', sequelize.literal(likeCase(false))), 'dislikeCount']
         ]
       },
-      include: [{
-        model: ImageModel,
-        attributes: ['id', 'link']
-      }, {
-        model: UserModel,
-        attributes: ['id', 'username'],
-        include: {
+      include: [
+        {
           model: ImageModel,
           attributes: ['id', 'link']
+        },
+        {
+          model: UserModel,
+          attributes: ['id', 'username'],
+          include: {
+            model: ImageModel,
+            attributes: ['id', 'link']
+          }
+        },
+        {
+          model: PostReactionModel,
+          attributes: [],
+          duplicating: false
         }
-      }, {
-        model: PostReactionModel,
-        attributes: [],
-        duplicating: false
-      }],
-      group: [
-        'post.id',
-        'image.id',
-        'user.id',
-        'user->image.id'
       ],
+      group: ['post.id', 'image.id', 'user.id', 'user->image.id'],
       order: [['createdAt', 'DESC']],
       offset,
       limit
@@ -70,38 +72,52 @@ class PostRepository extends BaseRepository {
       where: { id },
       attributes: {
         include: [
-          [sequelize.literal(`
-                        (SELECT COUNT(*)
-                        FROM "comments" as "comment"
-                        WHERE "post"."id" = "comment"."postId")`), 'commentCount'],
+          [sequelize.literal(`(SELECT COUNT(*)
+          FROM "comments" as "comment"
+          WHERE "post"."id" = "comment"."postId")`), 'commentCount'],
           [sequelize.fn('SUM', sequelize.literal(likeCase(true))), 'likeCount'],
           [sequelize.fn('SUM', sequelize.literal(likeCase(false))), 'dislikeCount']
         ]
       },
-      include: [{
-        model: CommentModel,
-        include: {
+      include: [
+        {
+          model: CommentModel,
+          attributes: {
+            include: [
+              [sequelize.fn('SUM', sequelize.literal(likeCaseComments(true))), 'likeCount'],
+              [sequelize.fn('SUM', sequelize.literal(likeCaseComments(false))), 'dislikeCount']
+           ]
+          },
+          include: {
+            model: UserModel,
+            attributes: ['id', 'username'],
+            include: {
+              model: ImageModel,
+              attributes: ['id', 'link']
+            }
+          }
+        },
+        {
           model: UserModel,
           attributes: ['id', 'username'],
           include: {
             model: ImageModel,
             attributes: ['id', 'link']
           }
-        }
-      }, {
-        model: UserModel,
-        attributes: ['id', 'username'],
-        include: {
+        },
+        {
           model: ImageModel,
           attributes: ['id', 'link']
-        }
-      }, {
-        model: ImageModel,
-        attributes: ['id', 'link']
-      }, {
-        model: PostReactionModel,
-        attributes: []
-      }]
+        },
+        {
+          model: PostReactionModel,
+          attributes: []
+        },
+        {
+          model: CommentReactionModel,
+          attributes: []
+        } 
+      ]
     });
   }
 }
