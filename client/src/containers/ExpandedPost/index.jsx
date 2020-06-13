@@ -11,6 +11,8 @@ import {
   toggleExpandedPost,
   toggleUpdatedPost,
   toggleDeletedPost,
+  likeComment,
+  dislikeComment,
   addComment,
   updateComment,
   deleteComment,
@@ -29,6 +31,8 @@ const ExpandedPost = ({
   sharePost,
   likePost: like,
   dislikePost: dislike,
+  likeComment: likeCom,
+  dislikeComment: dislikeCom,
   toggleExpandedPost: toggle,
   toggleUpdatedPost: toggleUpdated,
   toggleDeletedPost: toggleDeleted,
@@ -60,7 +64,17 @@ const ExpandedPost = ({
             {post.comments &&
               post.comments
                 .sort((c1, c2) => moment(c1.createdAt).diff(c2.createdAt))
-                .map((comment) => <Comment key={comment.id} comment={comment} toggleUpdatedComment={toggleUpdatedCom} toggleDeletedComment={toggleDeletedCom} />)}
+                .map((comment) => (
+                  <Comment
+                    key={comment.id}
+                    comment={comment}
+                    toggleUpdatedComment={toggleUpdatedCom}
+                    toggleDeletedComment={toggleDeletedCom}
+                    likeComment={likeCom}
+                    dislikeComment={dislikeCom}
+                  />
+                )
+                )}
             <AddComment postId={post.id} addComment={add} />
 
             {updatedComment && updatedComment.userId === userId && (
@@ -93,6 +107,8 @@ ExpandedPost.propTypes = {
   toggleDeletedComment: PropTypes.func.isRequired,
   likePost: PropTypes.func.isRequired,
   dislikePost: PropTypes.func.isRequired,
+  likeComment: PropTypes.func.isRequired,
+  dislikeComment: PropTypes.func.isRequired,
   addComment: PropTypes.func.isRequired,
   updateComment: PropTypes.func.isRequired,
   deleteComment: PropTypes.func.isRequired,
@@ -106,7 +122,11 @@ const mapStateToProps = (rootState) => ({
   userId: rootState.profile.user.id,
 });
 
-const actions = { likePost, dislikePost, toggleExpandedPost, addComment, toggleUpdatedPost, toggleDeletedPost, updateComment, deleteComment, toggleUpdatedComment, toggleDeletedComment };
+const actions = {
+  likePost, dislikePost, likeComment, dislikeComment,
+  toggleExpandedPost, addComment, toggleUpdatedPost, toggleDeletedPost,
+  updateComment, deleteComment, toggleUpdatedComment, toggleDeletedComment,
+};
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 
