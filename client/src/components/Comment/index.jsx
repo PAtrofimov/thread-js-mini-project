@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from "prop-types";
 import { Comment as CommentUI, Label, Icon } from "semantic-ui-react";
 import moment from "moment";
@@ -7,7 +7,7 @@ import { getUserImgLink } from "src/helpers/imageHelper";
 
 import styles from "./styles.module.scss";
 
-const Comment = ({ comment: { body, createdAt, user, id }, toggleUpdatedComment: toggle, toggleDeletedComment: toggleDel }) => (
+const Comment = ({ comment: { body, createdAt, user, id, postId, likeCount=0, dislikeCount=0 }, toggleUpdatedComment: toggle, toggleDeletedComment: toggleDel, likeComment, dislikeComment}) => (
 
   <CommentUI className={styles.comment}>
     <CommentUI.Avatar src={getUserImgLink(user.image)} />
@@ -16,6 +16,26 @@ const Comment = ({ comment: { body, createdAt, user, id }, toggleUpdatedComment:
       <CommentUI.Metadata>{moment(createdAt).fromNow()}</CommentUI.Metadata>
       <CommentUI.Text>{body}</CommentUI.Text>
       <CommentUI.Actions>
+        <Label
+          basic
+          size="small"
+          as="a"
+          className={styles.toolbarBtn}
+          onClick={() => likeComment(id, postId)}
+        >
+          <Icon name="thumbs up" />
+          {likeCount}
+        </Label>
+        <Label
+          basic
+          size="small"
+          as="a"
+          className={styles.toolbarBtn}
+          onClick={() => dislikeComment(id, postId)}
+        >
+          <Icon name="thumbs down" />
+          {dislikeCount}
+        </Label>
         <Label
           basic
           size="small"
