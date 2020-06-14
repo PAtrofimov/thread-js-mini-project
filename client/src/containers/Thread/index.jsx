@@ -29,7 +29,8 @@ import styles from "./styles.module.scss";
 
 const postsFilter = {
   userId: undefined,
-  conditionType: undefined,
+  userConditionType: undefined,
+  likedUserId: undefined,
   from: 0,
   count: 10,
 };
@@ -55,12 +56,13 @@ const Thread = ({
   const [sharedPostId, setSharedPostId] = useState(undefined);
   const [showOwnPosts, setShowOwnPosts] = useState(false);
   const [hideOwnPosts, setHideOwnPosts] = useState(false);
+  const [showLikedPosts, setShowLikedPosts] = useState(false);
 
   const toggleShowOwnPosts = () => {
     setShowOwnPosts(!showOwnPosts);
     postsFilter.userId = showOwnPosts ? undefined : userId;
     postsFilter.from = 0;
-    postsFilter.conditionType = undefined;
+    postsFilter.userConditionType = undefined;
     load(postsFilter);
     postsFilter.from = postsFilter.count; // for the next scroll
   };
@@ -69,7 +71,17 @@ const Thread = ({
     setHideOwnPosts(!hideOwnPosts);
     postsFilter.userId = hideOwnPosts ? undefined : userId;
     postsFilter.from = 0;
-    postsFilter.conditionType = hideOwnPosts ? undefined : 'ne';
+    postsFilter.userConditionType = hideOwnPosts ? undefined : 'ne';
+    load(postsFilter);
+    postsFilter.from = postsFilter.count; // for the next scroll
+  };
+
+  const toggleShowLikedPosts = () => {
+    setShowLikedPosts(!showLikedPosts);
+    postsFilter.userId = (hideOwnPosts || showOwnPosts) ? userId : undefined;
+    postsFilter.from = 0;
+    postsFilter.userConditionType = hideOwnPosts ? 'ne' : undefined;
+    postsFilter.likedUserId = showLikedPosts ? undefined : userId;
     load(postsFilter);
     postsFilter.from = postsFilter.count; // for the next scroll
   };
@@ -105,6 +117,12 @@ const Thread = ({
           checked={hideOwnPosts}
           disabled={showOwnPosts}
           onChange={toggleHideOwnPosts}
+        />
+         <Checkbox
+          toggle
+          label="Show liked posts"
+          checked={showLikedPosts}        
+          onChange={toggleShowLikedPosts}
         />
       </div>
       <InfiniteScroll

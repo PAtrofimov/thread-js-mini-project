@@ -18,11 +18,34 @@ const likeCaseComments = bool =>
 
 class PostRepository extends BaseRepository {
   async getPosts(filter) {
-    const { from: offset, count: limit, userId, conditionType = 'eq' } = filter;
+    const {
+      from: offset,
+      count: limit,
+      userId,
+      userConditionType = 'eq',
+      likedUserId
+    } = filter;
 
     const where = {};
+    const likedByMeCase = likedUserId
+      ? `CASE WHEN "postReactions"."isLike" = true 
+    and "postReactions"."userId" = '${likedUserId}'
+    THEN 1 ELSE 0 END`
+      : '0';
+
     if (userId) {
-      Object.assign(where, { userId: { [Op[`${conditionType}`]]: userId } });
+      Object.assign(where, {
+        userId: { [Op[`${userConditionType}`]]: userId }
+      });
+    }
+
+    if (likedUserId) {
+      Object.assign(where, {
+        [Op.and]: [
+          sequelize.literal(`"post"."id" in (select "postReaction"."postId" from "postReactions" as "postReaction"
+          where "postReaction"."isLike" = true and "postReaction"."userId" = '${likedUserId}')`)
+        ]
+      });
     }
 
     return this.model.findAll({
@@ -35,6 +58,8 @@ class PostRepository extends BaseRepository {
                         WHERE "post"."id" = "comment"."postId")`),
             'commentCount'
           ],
+          [sequelize.fn('MAX', sequelize.literal(likedByMeCase)), 'likedByMe'],
+
           [sequelize.fn('SUM', sequelize.literal(likeCase(true))), 'likeCount'],
           [
             sequelize.fn('SUM', sequelize.literal(likeCase(false))),
