@@ -15,7 +15,7 @@ const env = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: process.env.DB_DIALECT,
-    logging: false
+    logging: true
   },
   imgur: {
     imgurId: process.env.IMGUR_ID,
