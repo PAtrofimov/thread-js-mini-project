@@ -1,7 +1,27 @@
+import { Op } from 'sequelize';
+import sequelize from '../db/connection';
 import { UserModel, ImageModel } from '../models/index';
 import BaseRepository from './baseRepository';
 
 class UserRepository extends BaseRepository {
+  
+  getUsersOfPostByReaction(postId, isLike = true) {
+    const where = {};
+
+    Object.assign(where, {
+      [Op.and]: [
+        sequelize.literal(`id in (select "postReactions"."userId" 
+            from "postReactions" as "postReactions"  
+            WHERE "postReactions"."postId" = '${postId}' and "postReactions"."isLike" = ${isLike})`)
+      ]
+    });
+
+    return this.model.findAll({
+      where,
+      attributes: ['id', 'username']
+    });
+  }
+
   addUser(user) {
     return this.create(user);
   }
@@ -16,10 +36,7 @@ class UserRepository extends BaseRepository {
 
   getUserById(id) {
     return this.model.findOne({
-      group: [
-        'user.id',
-        'image.id'
-      ],
+      group: ['user.id', 'image.id'],
       where: { id },
       include: {
         model: ImageModel,
