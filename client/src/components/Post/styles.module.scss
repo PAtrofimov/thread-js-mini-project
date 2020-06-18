@@ -1,3 +1,7 @@
 :global(.ui.basic.label).toolbarBtn {
   border: none
 }
+
+:global(.blurring.dimmed.dimmable > :not(.dimmer).popup).popup {
+  filter: none;
+}

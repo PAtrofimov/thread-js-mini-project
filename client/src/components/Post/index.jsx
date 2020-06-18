@@ -68,7 +68,7 @@ const Post = ({
           className={styles.toolbarBtn}
           onClick={() => likePost(id)}
         >
-          <Popup
+          <Popup className={styles.popup}
             content={
               usersLikedPost.length > 0 ? usersLikedPost.join(', ') : 'No likes'
             }
@@ -86,7 +86,7 @@ const Post = ({
           className={styles.toolbarBtn}
           onClick={() => dislikePost(id)}
         >
-          <Popup
+          <Popup className={styles.popup}
             content={
               usersDislikedPost.length > 0
                 ? usersDislikedPost.join(', ')
