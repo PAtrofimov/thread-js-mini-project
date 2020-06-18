@@ -24,7 +24,7 @@ const Comment = ({ comment: { body, createdAt, user, id, postId, likeCount=0, di
           onClick={() => likeComment(id, postId)}
         >
           <Icon name="thumbs up" />
-          {likeCount}
+          {likeCount||0}
         </Label>
         <Label
           basic
@@ -34,7 +34,7 @@ const Comment = ({ comment: { body, createdAt, user, id, postId, likeCount=0, di
           onClick={() => dislikeComment(id, postId)}
         >
           <Icon name="thumbs down" />
-          {dislikeCount}
+          {dislikeCount||0}
         </Label>
         <Label
           basic
