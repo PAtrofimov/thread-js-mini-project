@@ -68,5 +68,29 @@ export const dislikePost = async (postId) => {
   return response.json();
 };
 
+export const showUsersByLikes = async (postId) => {
+  const response = await callWebApi({
+    endpoint: `/api/posts/react/${postId}`,
+    type: "GET",
+    query: {
+      postId,
+      isLike: true,
+    },
+  });
+  return response.json();
+};
+
+export const showUsersByDislikes = async (postId) => {
+  const response = await callWebApi({
+    endpoint: `/api/posts/react/${postId}`,
+    type: "GET",
+    query: {
+      postId,
+      isLike: false,
+    },
+  });
+  return response.json();
+};
+
 // should be replaced by approppriate function
 export const getPostByHash = async (hash) => getPost(hash);
