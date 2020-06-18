@@ -113,9 +113,16 @@ class PostRepository extends BaseRepository {
           WHERE "post"."id" = "comment"."postId")`),
             'commentCount'
           ],
-          [sequelize.fn('SUM', sequelize.literal(likeCase(true))), 'likeCount'],
           [
-            sequelize.fn('SUM', sequelize.literal(likeCase(false))),
+            sequelize.literal(`(SELECT SUM(${likeCase(true)})
+          FROM "postReactions" as "postReactions"
+          WHERE "post"."id" = "postReactions"."postId")`),
+            'likeCount'
+          ],
+          [
+            sequelize.literal(`(SELECT SUM(${likeCase(false)})
+          FROM "postReactions" as "postReactions"
+          WHERE "post"."id" = "postReactions"."postId")`),
             'dislikeCount'
           ]
         ]
@@ -126,11 +133,15 @@ class PostRepository extends BaseRepository {
           attributes: {
             include: [
               [
-                sequelize.fn('SUM', sequelize.literal(likeCaseComments(true))),
+                sequelize.literal(`(SELECT SUM(${likeCaseComments(true)})
+              FROM "commentReactions" as "commentReactions"
+              WHERE "comments"."id" = "commentReactions"."commentId")`),
                 'likeCount'
               ],
               [
-                sequelize.fn('SUM', sequelize.literal(likeCaseComments(false))),
+                sequelize.literal(`(SELECT SUM(${likeCaseComments(false)})
+              FROM "commentReactions" as "commentReactions"
+              WHERE "comments"."id" = "commentReactions"."commentId")`),
                 'dislikeCount'
               ]
             ]
@@ -158,11 +169,13 @@ class PostRepository extends BaseRepository {
         },
         {
           model: PostReactionModel,
-          attributes: []
+          attributes: [],
+          duplicating: false
         },
         {
           model: CommentReactionModel,
-          attributes: []
+          attributes: [],
+          duplicating: false
         }
       ]
     });
