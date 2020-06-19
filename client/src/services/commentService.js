@@ -60,3 +60,27 @@ export const dislikeComment = async (commentId, postId) => {
   });
   return response.json();
 };
+
+export const showUsersByLikes = async (commentId) => {
+  const response = await callWebApi({
+    endpoint: `/api/comments/react/${commentId}`,
+    type: "GET",
+    query: {
+      commentId,
+      isLike: true,
+    },
+  });
+  return response.json();
+};
+
+export const showUsersByDislikes = async (commentId) => {
+  const response = await callWebApi({
+    endpoint: `/api/comments/react/${commentId}`,
+    type: "GET",
+    query: {
+      commentId,
+      isLike: false,
+    },
+  });
+  return response.json();
+};
