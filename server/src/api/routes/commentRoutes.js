@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as commentService from '../services/commentService';
+import * as userService from '../services/userService';
 
 const router = Router();
 
@@ -13,6 +14,14 @@ router
   .delete('/:id', (req, res, next) => commentService.deleteById(req.params.id)
     .then(result => res.send({ result }))
     .catch(next))
+  .get('/react/:id', (req, res, next) =>
+    userService
+      .getUsersOfCommentByReaction(req.query)
+      .then(users => {
+        return res.send(users);
+      })
+      .catch(next)
+  )
   .put('/react', (req, res, next) => commentService.setReaction(req.user.id, req.body)
     .then(reaction => {
       if (reaction.comment && (reaction.comment.userId !== req.user.id)) {
