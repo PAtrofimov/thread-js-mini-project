@@ -1,13 +1,17 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens */
 import React, { useState } from 'react';
-import PropTypes from "prop-types";
-import { Form, Button, Icon, Modal } from "semantic-ui-react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { toggleUpdatedComment } from "src/containers/Thread/actions";
-import styles from "./styles.module.scss";
+import PropTypes from 'prop-types';
+import { Form, Button, Modal } from 'semantic-ui-react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { toggleUpdatedComment } from 'src/containers/Thread/actions';
+import styles from './styles.module.scss';
 
-const UpdatedComment = ({ comment, updateComment, toggleUpdatedComment }) => {
+const UpdatedComment = ({
+  comment,
+  updateComment,
+  toggleUpdatedComment: toggleUpdated
+}) => {
   const [body, setBody] = useState(comment?.body);
 
   const handleUpdateComment = async () => {
@@ -18,7 +22,7 @@ const UpdatedComment = ({ comment, updateComment, toggleUpdatedComment }) => {
   };
 
   return (
-    <Modal open onClose={() => toggleUpdatedComment()}>
+    <Modal open onClose={() => toggleUpdated()}>
       <Modal.Header className={styles.header}>
         <span>Update Comment</span>
       </Modal.Header>
@@ -45,11 +49,11 @@ const UpdatedComment = ({ comment, updateComment, toggleUpdatedComment }) => {
 UpdatedComment.propTypes = {
   updateComment: PropTypes.func.isRequired,
   toggleUpdatedComment: PropTypes.func.isRequired,
-  comment: PropTypes.objectOf(PropTypes.any),
+  comment: PropTypes.objectOf(PropTypes.any).isRequired
 };
 
 const mapStateToProps = (rootState) => ({
-  comment: rootState.posts.updatedComment,
+  comment: rootState.posts.updatedComment
 });
 
 const actions = { toggleUpdatedComment };

@@ -1,13 +1,13 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens */
 import React from 'react';
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import PropTypes from "prop-types";
-import { login } from "src/containers/Profile/actions";
-import Logo from "src/components/Logo";
-import { Grid, Header, Message } from "semantic-ui-react";
-import { NavLink } from "react-router-dom";
-import LoginForm from "src/components/LoginForm";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
+import { login } from 'src/containers/Profile/actions';
+import Logo from 'src/components/Logo';
+import { Grid, Header, Message } from 'semantic-ui-react';
+import { NavLink } from 'react-router-dom';
+import LoginForm from 'src/components/LoginForm';
 
 const LoginPage = ({ login: signIn }) => (
   <Grid textAlign="center" verticalAlign="middle" className="fill">
@@ -18,7 +18,8 @@ const LoginPage = ({ login: signIn }) => (
       </Header>
       <LoginForm login={signIn} />
       <Message>
-        New to us?{" "}
+        New to us?
+        {' '}
         <NavLink exact to="/registration">
           Sign Up
         </NavLink>
@@ -28,7 +29,7 @@ const LoginPage = ({ login: signIn }) => (
 );
 
 LoginPage.propTypes = {
-  login: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired
 };
 
 const actions = { login };

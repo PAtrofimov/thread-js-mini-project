@@ -1,13 +1,13 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens */
 
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { Form, Button, Icon, Image, Segment } from "semantic-ui-react";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Form, Button, Icon, Image, Segment } from 'semantic-ui-react';
 
-import styles from "./styles.module.scss";
+import styles from './styles.module.scss';
 
 const AddPost = ({ addPost, uploadImage }) => {
-  const [body, setBody] = useState("");
+  const [body, setBody] = useState('');
   const [image, setImage] = useState(undefined);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -16,7 +16,7 @@ const AddPost = ({ addPost, uploadImage }) => {
       return;
     }
     await addPost({ imageId: image?.imageId, body });
-    setBody("");
+    setBody('');
     setImage(undefined);
   };
 
@@ -69,7 +69,7 @@ const AddPost = ({ addPost, uploadImage }) => {
 
 AddPost.propTypes = {
   addPost: PropTypes.func.isRequired,
-  uploadImage: PropTypes.func.isRequired,
+  uploadImage: PropTypes.func.isRequired
 };
 
 export default AddPost;

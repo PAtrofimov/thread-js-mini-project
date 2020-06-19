@@ -1,4 +1,3 @@
-/* eslint-disable */
 
 import { Router } from 'express';
 import * as postService from '../services/postService';

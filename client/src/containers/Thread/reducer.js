@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens, no-case-declarations */
 import {
   SET_ALL_POSTS,
   LOAD_MORE_POSTS,
@@ -9,8 +9,8 @@ import {
   SET_DELETED_POST,
   SET_EXPANDED_POST,
   SET_UPDATED_COMMENT,
-  SET_DELETED_COMMENT,
-} from "./actionTypes";
+  SET_DELETED_COMMENT
+} from './actionTypes';
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -18,69 +18,76 @@ export default (state = {}, action) => {
       return {
         ...state,
         posts: action.posts,
-        hasMorePosts: Boolean(action.posts.length),
+        hasMorePosts: Boolean(action.posts.length)
       };
     case LOAD_MORE_POSTS:
       return {
         ...state,
         posts: [...(state.posts || []), ...action.posts],
-        hasMorePosts: Boolean(action.posts.length),
+        hasMorePosts: Boolean(action.posts.length)
       };
     case ADD_POST:
       return {
         ...state,
-        posts: [action.post, ...state.posts],
+        posts: [action.post, ...state.posts]
       };
     case UPDATE_POST:
       const { id, body, image } = action.post;
 
       const mapEdited = (post) => ({ ...post, body, image });
 
-      const posts = state.posts.map((post) => {
-        {
-          return post.id === id ? mapEdited(post) : post;
-        }
-      });
+      const posts = state.posts.map((post) =>
+        post.id === id ? mapEdited(post) : post
+      );
 
-      const expandedPost = state.expandedPost && state.expandedPost.id === id ? action.post : state.expandedPost;
+      const expandedPost =
+        state.expandedPost && state.expandedPost.id === id
+          ? action.post
+          : state.expandedPost;
 
       return {
         ...state,
         posts,
-        expandedPost,
+        expandedPost
       };
     case DELETE_POST:
       const { id: deletedPostId } = action.post;
       return {
         ...state,
-        posts: state.posts.filter(post => post.id !== deletedPostId),
-        expandedPost: state.expandedPost && state.expandedPost.id === deletedPostId ? undefined : state.expandedPost,
-        updatedPost: state.updatedPost && state.updatedPost.id === deletedPostId ? undefined : state.updatedPost,
+        posts: state.posts.filter((post) => post.id !== deletedPostId),
+        expandedPost:
+          state.expandedPost && state.expandedPost.id === deletedPostId
+            ? undefined
+            : state.expandedPost,
+        updatedPost:
+          state.updatedPost && state.updatedPost.id === deletedPostId
+            ? undefined
+            : state.updatedPost
       };
     case SET_UPDATED_POST:
       return {
         ...state,
-        updatedPost: action.post,
+        updatedPost: action.post
       };
     case SET_DELETED_POST:
       return {
         ...state,
-        deletedPost: action.post,
+        deletedPost: action.post
       };
     case SET_EXPANDED_POST:
       return {
         ...state,
-        expandedPost: action.post,
+        expandedPost: action.post
       };
     case SET_UPDATED_COMMENT:
       return {
         ...state,
-        updatedComment: action.comment,
+        updatedComment: action.comment
       };
     case SET_DELETED_COMMENT:
       return {
         ...state,
-        deletedComment: action.comment,
+        deletedComment: action.comment
       };
     default:
       return state;

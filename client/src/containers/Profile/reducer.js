@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { SET_USER } from './actionTypes';
 
 export default (state = {}, action) => {
@@ -8,7 +7,7 @@ export default (state = {}, action) => {
         ...state,
         user: action.user,
         isAuthorized: Boolean(action.user?.id),
-        isLoading: false,
+        isLoading: false
       };
     default:
       return state;

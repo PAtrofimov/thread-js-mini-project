@@ -1,11 +1,11 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens */
 import callWebApi from 'src/helpers/webApiHelper';
 
 export const addComment = async (request) => {
   const response = await callWebApi({
-    endpoint: "/api/comments",
-    type: "POST",
-    request,
+    endpoint: '/api/comments',
+    type: 'POST',
+    request
   });
   return response.json();
 };
@@ -13,8 +13,8 @@ export const addComment = async (request) => {
 export const updateComment = async (request) => {
   const response = await callWebApi({
     endpoint: `/api/comments/${request.id}`,
-    type: "PUT",
-    request,
+    type: 'PUT',
+    request
   });
   return response.json();
 };
@@ -22,7 +22,7 @@ export const updateComment = async (request) => {
 export const getComment = async (id) => {
   const response = await callWebApi({
     endpoint: `/api/comments/${id}`,
-    type: "GET",
+    type: 'GET'
   });
   return response.json();
 };
@@ -30,33 +30,33 @@ export const getComment = async (id) => {
 export const deleteComment = async (id) => {
   const response = await callWebApi({
     endpoint: `/api/comments/${id}`,
-    type: "DELETE",
+    type: 'DELETE'
   });
   return response.json();
 };
 
 export const likeComment = async (commentId, postId) => {
   const response = await callWebApi({
-    endpoint: "/api/comments/react",
-    type: "PUT",
+    endpoint: '/api/comments/react',
+    type: 'PUT',
     request: {
       commentId,
       postId,
-      isLike: true,
-    },
+      isLike: true
+    }
   });
   return response.json();
 };
 
 export const dislikeComment = async (commentId, postId) => {
   const response = await callWebApi({
-    endpoint: "/api/comments/react",
-    type: "PUT",
+    endpoint: '/api/comments/react',
+    type: 'PUT',
     request: {
       commentId,
       postId,
-      isLike: false,
-    },
+      isLike: false
+    }
   });
   return response.json();
 };
@@ -64,11 +64,11 @@ export const dislikeComment = async (commentId, postId) => {
 export const showUsersByLikes = async (commentId) => {
   const response = await callWebApi({
     endpoint: `/api/comments/react/${commentId}`,
-    type: "GET",
+    type: 'GET',
     query: {
       commentId,
-      isLike: true,
-    },
+      isLike: true
+    }
   });
   return response.json();
 };
@@ -76,11 +76,11 @@ export const showUsersByLikes = async (commentId) => {
 export const showUsersByDislikes = async (commentId) => {
   const response = await callWebApi({
     endpoint: `/api/comments/react/${commentId}`,
-    type: "GET",
+    type: 'GET',
     query: {
       commentId,
-      isLike: false,
-    },
+      isLike: false
+    }
   });
   return response.json();
 };

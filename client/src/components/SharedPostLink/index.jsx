@@ -1,4 +1,5 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens */
+
 import React, { useState, useRef } from 'react';
 import PropTypes from "prop-types";
 import { Modal, Input, Icon } from "semantic-ui-react";

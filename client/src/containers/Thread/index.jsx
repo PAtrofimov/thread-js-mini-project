@@ -1,17 +1,18 @@
-/* eslint-disable */
-import React, { useState, useEffect } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import * as imageService from "src/services/imageService";
-import ExpandedPost from "src/containers/ExpandedPost";
-import Post from "src/components/Post";
-import AddPost from "src/components/AddPost";
-import UpdatedPost from "src/containers/UpdatedPost";
-import DeletedPost from "src/containers/DeletedPost";
-import SharedPostLink from "src/components/SharedPostLink";
-import { Checkbox, Loader } from "semantic-ui-react";
-import InfiniteScroll from "react-infinite-scroller";
+/* eslint-disable arrow-parens */
+
+import React, { useState } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import * as imageService from 'src/services/imageService';
+import ExpandedPost from 'src/containers/ExpandedPost';
+import Post from 'src/components/Post';
+import AddPost from 'src/components/AddPost';
+import UpdatedPost from 'src/containers/UpdatedPost';
+import DeletedPost from 'src/containers/DeletedPost';
+import SharedPostLink from 'src/components/SharedPostLink';
+import { Checkbox, Loader } from 'semantic-ui-react';
+import InfiniteScroll from 'react-infinite-scroller';
 import {
   loadPosts,
   loadMorePosts,
@@ -22,17 +23,17 @@ import {
   toggleDeletedPost,
   addPost,
   deletePost,
-  updatePost,
-} from "./actions";
+  updatePost
+} from './actions';
 
-import styles from "./styles.module.scss";
+import styles from './styles.module.scss';
 
 const postsFilter = {
   userId: undefined,
   userConditionType: undefined,
   likedUserId: undefined,
   from: 0,
-  count: 10,
+  count: 10
 };
 
 const Thread = ({
@@ -51,7 +52,7 @@ const Thread = ({
   dislikePost: dislike,
   toggleUpdatedPost: toggleUpdated,
   toggleDeletedPost: toggleDeleted,
-  toggleExpandedPost: toggle,
+  toggleExpandedPost: toggle
 }) => {
   const [sharedPostId, setSharedPostId] = useState(undefined);
   const [showOwnPosts, setShowOwnPosts] = useState(false);
@@ -78,7 +79,7 @@ const Thread = ({
 
   const toggleShowLikedPosts = () => {
     setShowLikedPosts(!showLikedPosts);
-    postsFilter.userId = (hideOwnPosts || showOwnPosts) ? userId : undefined;
+    postsFilter.userId = hideOwnPosts || showOwnPosts ? userId : undefined;
     postsFilter.from = 0;
     postsFilter.userConditionType = hideOwnPosts ? 'ne' : undefined;
     postsFilter.likedUserId = showLikedPosts ? undefined : userId;
@@ -111,17 +112,17 @@ const Thread = ({
           disabled={hideOwnPosts}
           onChange={toggleShowOwnPosts}
         />
-          <Checkbox
+        <Checkbox
           toggle
           label="Hide my posts"
           checked={hideOwnPosts}
           disabled={showOwnPosts}
           onChange={toggleHideOwnPosts}
         />
-         <Checkbox
+        <Checkbox
           toggle
           label="Show liked posts"
-          checked={showLikedPosts}        
+          checked={showLikedPosts}
           onChange={toggleShowLikedPosts}
         />
       </div>
@@ -145,7 +146,11 @@ const Thread = ({
         ))}
       </InfiniteScroll>
       {expandedPost && (
-        <ExpandedPost sharePost={sharePost} updatePost={changePost} deletePost={removePost} />
+        <ExpandedPost
+          sharePost={sharePost}
+          updatePost={changePost}
+          deletePost={removePost}
+        />
       )}
       {sharedPostId && (
         <SharedPostLink
@@ -154,15 +159,10 @@ const Thread = ({
         />
       )}
       {updatedPost && updatedPost.userId === userId && (
-        <UpdatedPost
-          uploadImage={uploadImage}
-          updatePost={changePost}
-        />
+        <UpdatedPost uploadImage={uploadImage} updatePost={changePost} />
       )}
       {deletedPost && deletedPost.userId === userId && (
-        <DeletedPost
-          deletePost={removePost}
-        />
+        <DeletedPost deletePost={removePost} />
       )}
     </div>
   );
@@ -184,7 +184,7 @@ Thread.propTypes = {
   toggleDeletedPost: PropTypes.func.isRequired,
   updatePost: PropTypes.func.isRequired,
   deletePost: PropTypes.func.isRequired,
-  addPost: PropTypes.func.isRequired,
+  addPost: PropTypes.func.isRequired
 };
 
 Thread.defaultProps = {
@@ -193,7 +193,7 @@ Thread.defaultProps = {
   expandedPost: undefined,
   updatedPost: undefined,
   deletedPost: undefined,
-  userId: undefined,
+  userId: undefined
 };
 
 const mapStateToProps = (rootState) => ({
@@ -202,7 +202,7 @@ const mapStateToProps = (rootState) => ({
   expandedPost: rootState.posts.expandedPost,
   updatedPost: rootState.posts.updatedPost,
   deletedPost: rootState.posts.deletedPost,
-  userId: rootState.profile.user.id,
+  userId: rootState.profile.user.id
 });
 
 const actions = {
@@ -215,7 +215,7 @@ const actions = {
   toggleDeletedPost,
   addPost,
   deletePost,
-  updatePost,
+  updatePost
 };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);

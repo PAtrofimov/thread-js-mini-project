@@ -1,14 +1,12 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens, react/jsx-wrap-multilines */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Image, Label, Icon } from 'semantic-ui-react';
+import { Card, Image, Label, Icon, Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import {
   showUsersByLikes,
   showUsersByDislikes
 } from 'src/services/postService';
-import { Popup } from 'semantic-ui-react';
-
 import styles from './styles.module.scss';
 
 const Post = ({
@@ -43,7 +41,7 @@ const Post = ({
     }
 
     fetchUsers();
-  }, [dislikeCount, likeCount]);
+  }, [dislikeCount, likeCount, id]);
 
   const date = moment(createdAt).fromNow();
   return (
@@ -68,13 +66,15 @@ const Post = ({
           className={styles.toolbarBtn}
           onClick={() => likePost(id)}
         >
-          <Popup className={styles.popup}
+          <Popup
+            className={styles.popup}
             content={
               usersLikedPost.length > 0 ? usersLikedPost.join(', ') : 'No likes'
             }
             trigger={
               <div>
-                <Icon name="thumbs up" /> {likeCount}
+                <Icon name="thumbs up" /> 
+                {likeCount}
               </div>
             }
           />
@@ -86,7 +86,8 @@ const Post = ({
           className={styles.toolbarBtn}
           onClick={() => dislikePost(id)}
         >
-          <Popup className={styles.popup}
+          <Popup
+            className={styles.popup}
             content={
               usersDislikedPost.length > 0
                 ? usersDislikedPost.join(', ')
@@ -94,7 +95,8 @@ const Post = ({
             }
             trigger={
               <div>
-                <Icon name="thumbs down" /> {dislikeCount}
+                <Icon name="thumbs down" /> 
+                {dislikeCount}
               </div>
             }
           />

@@ -1,13 +1,13 @@
-/* eslint-disable */
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import validator from "validator";
-import { Form, Button, Segment } from "semantic-ui-react";
+/* eslint-disable arrow-parens */
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import validator from 'validator';
+import { Form, Button, Segment } from 'semantic-ui-react';
 
 const RegistrationForm = ({ register: signOn }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
   const [isLoading, setLoading] = useState(false);
   const [isEmailValid, setEmailValid] = useState(true);
   const [isUsernameValid, setUsernameValid] = useState(true);
@@ -90,7 +90,7 @@ const RegistrationForm = ({ register: signOn }) => {
 };
 
 RegistrationForm.propTypes = {
-  register: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired
 };
 
 export default RegistrationForm;

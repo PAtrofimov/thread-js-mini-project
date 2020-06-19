@@ -1,15 +1,13 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens, react/jsx-wrap-multilines */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Comment as CommentUI, Label, Icon } from 'semantic-ui-react';
+import { Comment as CommentUI, Label, Icon, Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import { getUserImgLink } from 'src/helpers/imageHelper';
 import {
   showUsersByLikes,
   showUsersByDislikes
 } from 'src/services/commentService';
-import { Popup } from 'semantic-ui-react';
-
 import styles from './styles.module.scss';
 
 const Comment = ({
@@ -39,7 +37,7 @@ const Comment = ({
     }
 
     fetchUsers();
-  }, [dislikeCount, likeCount]);
+  }, [dislikeCount, likeCount, id]);
 
   return (
     <CommentUI className={styles.comment}>
@@ -65,7 +63,8 @@ const Comment = ({
               }
               trigger={
                 <div>
-                  <Icon name="thumbs up" /> {likeCount || 0}
+                  <Icon name="thumbs up" /> 
+                  {likeCount || 0}
                 </div>
               }
             />
@@ -86,7 +85,8 @@ const Comment = ({
               }
               trigger={
                 <div>
-                  <Icon name="thumbs down" /> {dislikeCount || 0}
+                  <Icon name="thumbs down" /> 
+                  {dislikeCount || 0}
                 </div>
               }
             />
@@ -116,7 +116,11 @@ const Comment = ({
 };
 
 Comment.propTypes = {
-  comment: PropTypes.objectOf(PropTypes.any).isRequired
+  comment: PropTypes.objectOf(PropTypes.any).isRequired,
+  toggleUpdatedComment: PropTypes.func.isRequired,
+  toggleDeletedComment: PropTypes.func.isRequired,
+  likeComment: PropTypes.func.isRequired,
+  dislikeComment: PropTypes.func.isRequired
 };
 
 export default Comment;

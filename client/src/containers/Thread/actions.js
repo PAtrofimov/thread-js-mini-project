@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens */
 import * as postService from 'src/services/postService';
 import * as commentService from 'src/services/commentService';
 import {
@@ -201,11 +201,10 @@ export const likeComment = (commentId, postId) => async (
   dispatch,
   getRootState
 ) => {
-  const {
-    id,
-    createdAt,
-    updatedAt
-  } = await commentService.likeComment(commentId, postId);
+  const { id, createdAt, updatedAt } = await commentService.likeComment(
+    commentId,
+    postId
+  );
   const diff = id ? 1 : -1; // if ID exists then the comment was liked, otherwise - like was removed
 
   const mapLikes = (post) => {
@@ -245,7 +244,8 @@ export const dislikeComment = (commentId, postId) => async (
   getRootState
 ) => {
   const { id, createdAt, updatedAt } = await commentService.dislikeComment(
-    commentId, postId
+    commentId,
+    postId
   );
   const diff = id ? 1 : -1; // if ID exists then the post was disliked, otherwise - dislike was removed
 
@@ -350,7 +350,7 @@ export const deleteComment = (commentId) => async (dispatch, getRootState) => {
   const mapComments = (post) => ({
     ...post,
     commentCount: +post.commentCount - 1,
-    comments: [...(post.comments || []).filter((it) => it.id !== commentId)] // comment is taken from the current closure
+    comments: [...(post.comments || []).filter((it) => it.id !== commentId)]
   });
 
   const {

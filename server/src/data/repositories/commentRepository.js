@@ -1,4 +1,3 @@
-/* eslint-disable */
 
 import sequelize from '../db/connection';
 import { CommentModel, UserModel, ImageModel, CommentReactionModel, PostModel } from '../models/index';

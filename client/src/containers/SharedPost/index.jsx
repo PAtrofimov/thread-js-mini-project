@@ -1,11 +1,11 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens */
 
 import React, { useEffect } from 'react';
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import PropTypes from "prop-types";
-import { Redirect } from "react-router-dom";
-import { toggleExpandedPost } from "src/containers/Thread/actions";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import { toggleExpandedPost } from 'src/containers/Thread/actions';
 
 const SharedPost = ({ match, toggleExpandedPost: toggle }) => {
   useEffect(() => {
@@ -17,11 +17,11 @@ const SharedPost = ({ match, toggleExpandedPost: toggle }) => {
 
 SharedPost.propTypes = {
   match: PropTypes.objectOf(PropTypes.any),
-  toggleExpandedPost: PropTypes.func.isRequired,
+  toggleExpandedPost: PropTypes.func.isRequired
 };
 
 SharedPost.defaultProps = {
-  match: undefined,
+  match: undefined
 };
 
 const actions = { toggleExpandedPost };

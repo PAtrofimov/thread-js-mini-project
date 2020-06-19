@@ -1,16 +1,16 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens */
 import * as authService from 'src/services/authService';
-import { SET_USER } from "./actionTypes";
+import { SET_USER } from './actionTypes';
 
-const setToken = (token) => localStorage.setItem("token", token);
+const setToken = (token) => localStorage.setItem('token', token);
 
 const setUser = (user) => async (dispatch) =>
   dispatch({
     type: SET_USER,
-    user,
+    user
   });
 
-const setAuthData = (user = null, token = "") => (dispatch, getRootState) => {
+const setAuthData = (user = null, token = '') => (dispatch, getRootState) => {
   setToken(token); // token should be set first before user
   setUser(user)(dispatch, getRootState);
 };

@@ -1,16 +1,24 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens */
 
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { Form, Button, Icon, Image, Modal } from "semantic-ui-react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { toggleUpdatedPost } from "src/containers/Thread/actions";
-import styles from "./styles.module.scss";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Form, Button, Icon, Image, Modal } from 'semantic-ui-react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { toggleUpdatedPost } from 'src/containers/Thread/actions';
+import styles from './styles.module.scss';
 
-const UpdatedPost = ({ post, updatePost, uploadImage, toggleUpdatedPost }) => {
+const UpdatedPost = ({
+  post,
+  updatePost,
+  uploadImage,
+  toggleUpdatedPost: toggleUpdated
+}) => {
   const [body, setBody] = useState(post?.body);
-  const [image, setImage] = useState({ imageId: post?.imageId, imageLink: post?.image?.link });
+  const [image, setImage] = useState({
+    imageId: post?.imageId,
+    imageLink: post?.image?.link
+  });
   const [isUploading, setIsUploading] = useState(false);
 
   const handleUpdatePost = async () => {
@@ -34,7 +42,12 @@ const UpdatedPost = ({ post, updatePost, uploadImage, toggleUpdatedPost }) => {
   };
 
   return (
-    <Modal open onClose={()=> {toggleUpdatedPost();}}>
+    <Modal
+      open
+      onClose={() => {
+        toggleUpdated();
+      }}
+    >
       <Modal.Header className={styles.header}>
         <span>Update Post</span>
       </Modal.Header>
@@ -82,12 +95,14 @@ const UpdatedPost = ({ post, updatePost, uploadImage, toggleUpdatedPost }) => {
 };
 
 UpdatedPost.propTypes = {
+  post: PropTypes.objectOf(PropTypes.any).isRequired,
   updatePost: PropTypes.func.isRequired,
-  uploadImage: PropTypes.func.isRequired,
+  toggleUpdatedPost: PropTypes.func.isRequired,
+  uploadImage: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (rootState) => ({
-  post: rootState.posts.updatedPost,
+  post: rootState.posts.updatedPost
 });
 
 const actions = { toggleUpdatedPost };

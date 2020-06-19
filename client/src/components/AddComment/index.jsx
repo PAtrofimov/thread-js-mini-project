@@ -1,17 +1,17 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens */
 import React, { useState } from 'react';
-import PropTypes from "prop-types";
-import { Form, Button } from "semantic-ui-react";
+import PropTypes from 'prop-types';
+import { Form, Button } from 'semantic-ui-react';
 
 const AddComment = ({ postId, addComment }) => {
-  const [body, setBody] = useState("");
+  const [body, setBody] = useState('');
 
   const handleAddComment = async () => {
     if (!body) {
       return;
     }
     await addComment({ postId, body });
-    setBody("");
+    setBody('');
   };
 
   return (
@@ -34,7 +34,7 @@ const AddComment = ({ postId, addComment }) => {
 
 AddComment.propTypes = {
   addComment: PropTypes.func.isRequired,
-  postId: PropTypes.string.isRequired,
+  postId: PropTypes.string.isRequired
 };
 
 export default AddComment;

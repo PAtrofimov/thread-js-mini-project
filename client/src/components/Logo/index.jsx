@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens */
 import React from 'react';
 import { Image, Header } from "semantic-ui-react";
 
@@ -9,7 +9,8 @@ export const Logo = () => (
     <Image
       circular
       src="http://s1.iconbird.com/ico/2013/8/428/w256h2561377930292cattied.png"
-    />{" "}
+    />
+    {" "}
     Thread
   </Header>
 );

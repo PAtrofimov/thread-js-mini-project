@@ -1,13 +1,13 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens */
 import React from 'react';
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import PropTypes from "prop-types";
-import { register } from "src/containers/Profile/actions";
-import Logo from "src/components/Logo";
-import { Grid, Header, Message } from "semantic-ui-react";
-import { NavLink } from "react-router-dom";
-import RegistrationForm from "src/components/RegistrationForm";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
+import { register } from 'src/containers/Profile/actions';
+import Logo from 'src/components/Logo';
+import { Grid, Header, Message } from 'semantic-ui-react';
+import { NavLink } from 'react-router-dom';
+import RegistrationForm from 'src/components/RegistrationForm';
 
 const RegistrationPage = ({ register: signOn }) => (
   <Grid textAlign="center" verticalAlign="middle" className="fill">
@@ -18,7 +18,8 @@ const RegistrationPage = ({ register: signOn }) => (
       </Header>
       <RegistrationForm register={signOn} />
       <Message>
-        Alredy with us?{" "}
+        Alredy with us?
+        {' '}
         <NavLink exact to="/login">
           Sign In
         </NavLink>
@@ -28,7 +29,7 @@ const RegistrationPage = ({ register: signOn }) => (
 );
 
 RegistrationPage.propTypes = {
-  register: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired
 };
 
 const actions = { register };

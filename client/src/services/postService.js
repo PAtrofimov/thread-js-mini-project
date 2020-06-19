@@ -1,20 +1,21 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens */
+
 import callWebApi from 'src/helpers/webApiHelper';
 
 export const getAllPosts = async (filter) => {
   const response = await callWebApi({
-    endpoint: "/api/posts",
-    type: "GET",
-    query: filter,
+    endpoint: '/api/posts',
+    type: 'GET',
+    query: filter
   });
   return response.json();
 };
 
 export const addPost = async (request) => {
   const response = await callWebApi({
-    endpoint: "/api/posts",
-    type: "POST",
-    request,
+    endpoint: '/api/posts',
+    type: 'POST',
+    request
   });
   return response.json();
 };
@@ -22,8 +23,8 @@ export const addPost = async (request) => {
 export const updatePost = async (request) => {
   const response = await callWebApi({
     endpoint: `/api/posts/${request.id}`,
-    type: "PUT",
-    request,
+    type: 'PUT',
+    request
   });
   return response.json();
 };
@@ -31,7 +32,7 @@ export const updatePost = async (request) => {
 export const getPost = async (id) => {
   const response = await callWebApi({
     endpoint: `/api/posts/${id}`,
-    type: "GET",
+    type: 'GET'
   });
   return response.json();
 };
@@ -39,31 +40,31 @@ export const getPost = async (id) => {
 export const deletePost = async (id) => {
   const response = await callWebApi({
     endpoint: `/api/posts/${id}`,
-    type: "DELETE",
+    type: 'DELETE'
   });
   return response.json();
 };
 
 export const likePost = async (postId) => {
   const response = await callWebApi({
-    endpoint: "/api/posts/react",
-    type: "PUT",
+    endpoint: '/api/posts/react',
+    type: 'PUT',
     request: {
       postId,
-      isLike: true,
-    },
+      isLike: true
+    }
   });
   return response.json();
 };
 
 export const dislikePost = async (postId) => {
   const response = await callWebApi({
-    endpoint: "/api/posts/react",
-    type: "PUT",
+    endpoint: '/api/posts/react',
+    type: 'PUT',
     request: {
       postId,
-      isLike: false,
-    },
+      isLike: false
+    }
   });
   return response.json();
 };
@@ -71,11 +72,11 @@ export const dislikePost = async (postId) => {
 export const showUsersByLikes = async (postId) => {
   const response = await callWebApi({
     endpoint: `/api/posts/react/${postId}`,
-    type: "GET",
+    type: 'GET',
     query: {
       postId,
-      isLike: true,
-    },
+      isLike: true
+    }
   });
   return response.json();
 };
@@ -83,11 +84,11 @@ export const showUsersByLikes = async (postId) => {
 export const showUsersByDislikes = async (postId) => {
   const response = await callWebApi({
     endpoint: `/api/posts/react/${postId}`,
-    type: "GET",
+    type: 'GET',
     query: {
       postId,
-      isLike: false,
-    },
+      isLike: false
+    }
   });
   return response.json();
 };

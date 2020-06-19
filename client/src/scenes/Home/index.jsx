@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';

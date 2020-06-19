@@ -1,4 +1,3 @@
-/* eslint-disable */
 
 import postRepository from '../../data/repositories/postRepository';
 import postReactionRepository from '../../data/repositories/postReactionRepository';

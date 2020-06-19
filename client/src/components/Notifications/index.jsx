@@ -1,12 +1,12 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens */
 import React, { useState, useEffect } from 'react';
-import PropTypes from "prop-types";
-import io from "socket.io-client";
+import PropTypes from 'prop-types';
+import io from 'socket.io-client';
 import {
   NotificationContainer,
-  NotificationManager,
-} from "react-notifications";
-import "react-notifications/lib/notifications.css";
+  NotificationManager
+} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 const Notifications = ({ user, applyPost }) => {
   const { REACT_APP_SOCKET_SERVER: address } = process.env;
@@ -17,11 +17,11 @@ const Notifications = ({ user, applyPost }) => {
       return undefined;
     }
     const { id } = user;
-    socket.emit("createRoom", id);
-    socket.on("like", () => {
-      NotificationManager.info("Your post was liked!");
+    socket.emit('createRoom', id);
+    socket.on('like', () => {
+      NotificationManager.info('Your post was liked!');
     });
-    socket.on("new_post", (post) => {
+    socket.on('new_post', (post) => {
       if (post.userId !== id) {
         applyPost(post.id);
       }
@@ -36,12 +36,12 @@ const Notifications = ({ user, applyPost }) => {
 };
 
 Notifications.defaultProps = {
-  user: undefined,
+  user: undefined
 };
 
 Notifications.propTypes = {
   user: PropTypes.objectOf(PropTypes.any),
-  applyPost: PropTypes.func.isRequired,
+  applyPost: PropTypes.func.isRequired
 };
 
 export default Notifications;

@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable arrow-parens */
 export const getUserImgLink = (image) =>
   image
     ? image.link
