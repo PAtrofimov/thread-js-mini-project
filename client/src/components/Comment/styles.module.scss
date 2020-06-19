@@ -3,3 +3,7 @@
     overflow: auto;
   }
 }
+
+:global(.blurring.dimmed.dimmable > :not(.dimmer).popup).popup {
+  filter: none;
+}
