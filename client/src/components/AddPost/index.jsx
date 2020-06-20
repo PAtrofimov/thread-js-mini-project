@@ -21,6 +21,9 @@ const AddPost = ({ addPost, uploadImage }) => {
   };
 
   const handleUploadFile = async ({ target }) => {
+    if (!target.files.length) {
+      return;
+    }
     setIsUploading(true);
     try {
       const { id: imageId, link: imageLink } = await uploadImage(
