@@ -15,16 +15,19 @@ const DeletedPost = ({
 }) => {
   const { id, image, body } = post;
 
+  const close = () => {
+    toggleDeleted();
+  };
+
   const handleDeletePost = async () => {
     await deletePost(id);
+    close();
   };
 
   return (
     <Modal
       open
-      onClose={() => {
-        toggleDeleted();
-      }}
+      onClose={close}
     >
       <Modal.Header className={styles.header}>
         <span>Delete post</span>

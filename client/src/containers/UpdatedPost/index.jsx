@@ -21,11 +21,16 @@ const UpdatedPost = ({
   });
   const [isUploading, setIsUploading] = useState(false);
 
+  const close = () => {
+    toggleUpdated();
+  };
+
   const handleUpdatePost = async () => {
     if (!body) {
       return;
     }
     await updatePost({ id: post?.id, imageId: image?.imageId, body });
+    close();
   };
 
   const handleUploadFile = async ({ target }) => {
@@ -42,12 +47,7 @@ const UpdatedPost = ({
   };
 
   return (
-    <Modal
-      open
-      onClose={() => {
-        toggleUpdated();
-      }}
-    >
+    <Modal open onClose={close}>
       <Modal.Header className={styles.header}>
         <span>Update Post</span>
       </Modal.Header>

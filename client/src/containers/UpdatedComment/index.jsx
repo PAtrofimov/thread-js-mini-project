@@ -14,15 +14,20 @@ const UpdatedComment = ({
 }) => {
   const [body, setBody] = useState(comment?.body);
 
+  const close = () => {
+    toggleUpdated();
+  };
+
   const handleUpdateComment = async () => {
     if (!body) {
       return;
     }
     await updateComment({ id: comment?.id, body });
+    close();
   };
 
   return (
-    <Modal open onClose={() => toggleUpdated()}>
+    <Modal open onClose={close}>
       <Modal.Header className={styles.header}>
         <span>Update Comment</span>
       </Modal.Header>

@@ -14,14 +14,19 @@ const DeletedComment = ({
 }) => {
   const body = comment?.body;
 
+  const close = () => {
+    toggleDeleted();
+  };
+
   const handleDeleteComment = async () => {
     if (comment) {
       await deleteComment(comment?.id);
     }
+    close();
   };
 
   return (
-    <Modal open onClose={() => toggleDeleted()}>
+    <Modal open onClose={close}>
       <Modal.Header className={styles.header}>
         <span>Delete Comment</span>
       </Modal.Header>
