@@ -3,3 +3,13 @@
   justify-content: center;
   align-items: center;
 }
+
+.imageWrapper {
+  margin-bottom: 10px
+}
+
+:global(.ui.image).image {
+  width: auto;
+  max-width: 150px;
+  max-height: 150px;
+}
