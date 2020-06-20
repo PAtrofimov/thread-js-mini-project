@@ -135,6 +135,7 @@ const Thread = ({
         {posts.map((post) => (
           <Post
             post={post}
+            own={post.userId === userId}
             likePost={like}
             dislikePost={dislike}
             toggleExpandedPost={toggle}

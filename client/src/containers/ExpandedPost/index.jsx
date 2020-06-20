@@ -74,6 +74,7 @@ const ExpandedPost = ({
               .map((comment) => (
                 <Comment
                   key={comment.id}
+                  own={comment.userId === userId}
                   comment={comment}
                   toggleUpdatedComment={toggleUpdatedCom}
                   toggleDeletedComment={toggleDeletedCom}
