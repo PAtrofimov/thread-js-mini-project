@@ -11,6 +11,7 @@ import styles from './styles.module.scss';
 
 const Post = ({
   post,
+  own,
   likePost,
   dislikePost,
   toggleExpandedPost,
@@ -45,8 +46,8 @@ const Post = ({
 
   const date = moment(createdAt).fromNow();
   return (
-    <Card style={{ width: '100%' }}>
-      {image && <Image src={image.link} wrapped ui={false} />}
+    <Card style={{ width: '100%'}}>
+      {image && <Image src={image.link} wrapped ui={false} style={{ maxWidth: '100%', maxHeight: '400px'}} />}
       <Card.Content>
         <Card.Meta>
           <span className="date">
@@ -73,8 +74,8 @@ const Post = ({
             }
             trigger={
               <div>
-                <Icon name="thumbs up" /> 
-                {likeCount}
+                <Icon name="thumbs up" />
+                {likeCount || 0}
               </div>
             }
           />
@@ -95,8 +96,8 @@ const Post = ({
             }
             trigger={
               <div>
-                <Icon name="thumbs down" /> 
-                {dislikeCount}
+                <Icon name="thumbs down" />
+                {dislikeCount || 0}
               </div>
             }
           />
@@ -120,26 +121,28 @@ const Post = ({
         >
           <Icon name="share alternate" />
         </Label>
-
-        <Label
-          basic
-          size="small"
-          as="a"
-          className={styles.toolbarBtn}
-          onClick={() => toggleUpdatedPost(id)}
-        >
-          <Icon name="edit" />
-        </Label>
-
-        <Label
-          basic
-          size="small"
-          as="a"
-          className={styles.toolbarBtn}
-          onClick={() => toggleDeletedPost(id)}
-        >
-          <Icon name="delete" />
-        </Label>
+        {own && (
+          <Label
+            basic
+            size="small"
+            as="a"
+            className={styles.toolbarBtn}
+            onClick={() => toggleUpdatedPost(id)}
+          >
+            <Icon name="edit" />
+          </Label>
+        )}
+        {own && (
+          <Label
+            basic
+            size="small"
+            as="a"
+            className={styles.toolbarBtn}
+            onClick={() => toggleDeletedPost(id)}
+          >
+            <Icon name="delete" />
+          </Label>
+        )}
       </Card.Content>
     </Card>
   );
@@ -147,6 +150,7 @@ const Post = ({
 
 Post.propTypes = {
   post: PropTypes.objectOf(PropTypes.any).isRequired,
+  own: PropTypes.bool.isRequired,
   likePost: PropTypes.func.isRequired,
   dislikePost: PropTypes.func.isRequired,
   toggleExpandedPost: PropTypes.func.isRequired,

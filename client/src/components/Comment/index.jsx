@@ -20,6 +20,7 @@ const Comment = ({
     likeCount = 0,
     dislikeCount = 0
   },
+  own,
   toggleUpdatedComment: toggle,
   toggleDeletedComment: toggleDel,
   likeComment,
@@ -63,7 +64,7 @@ const Comment = ({
               }
               trigger={
                 <div>
-                  <Icon name="thumbs up" /> 
+                  <Icon name="thumbs up" />
                   {likeCount || 0}
                 </div>
               }
@@ -85,30 +86,35 @@ const Comment = ({
               }
               trigger={
                 <div>
-                  <Icon name="thumbs down" /> 
+                  <Icon name="thumbs down" />
                   {dislikeCount || 0}
                 </div>
               }
             />
           </Label>
-          <Label
-            basic
-            size="small"
-            as="a"
-            className={styles.toolbarBtn}
-            onClick={() => toggle(id)}
-          >
-            <Icon name="edit" />
-          </Label>
-          <Label
-            basic
-            size="small"
-            as="a"
-            className={styles.toolbarBtn}
-            onClick={() => toggleDel(id)}
-          >
-            <Icon name="delete" />
-          </Label>
+          {own && (
+            <Label
+              basic
+              size="small"
+              as="a"
+              className={styles.toolbarBtn}
+              onClick={() => toggle(id)}
+            >
+              <Icon name="edit" />
+            </Label>
+          )}
+
+          {own && (
+            <Label
+              basic
+              size="small"
+              as="a"
+              className={styles.toolbarBtn}
+              onClick={() => toggleDel(id)}
+            >
+              <Icon name="delete" />
+            </Label>
+          )}
         </CommentUI.Actions>
       </CommentUI.Content>
     </CommentUI>
@@ -117,6 +123,7 @@ const Comment = ({
 
 Comment.propTypes = {
   comment: PropTypes.objectOf(PropTypes.any).isRequired,
+  own: PropTypes.bool.isRequired,
   toggleUpdatedComment: PropTypes.func.isRequired,
   toggleDeletedComment: PropTypes.func.isRequired,
   likeComment: PropTypes.func.isRequired,
