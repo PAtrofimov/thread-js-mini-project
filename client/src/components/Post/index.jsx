@@ -148,9 +148,13 @@ const Post = ({
   );
 };
 
+Post.defaultProps = {
+  own: undefined
+};
+
 Post.propTypes = {
   post: PropTypes.objectOf(PropTypes.any).isRequired,
-  own: PropTypes.bool.isRequired,
+  own: PropTypes.bool,
   likePost: PropTypes.func.isRequired,
   dislikePost: PropTypes.func.isRequired,
   toggleExpandedPost: PropTypes.func.isRequired,

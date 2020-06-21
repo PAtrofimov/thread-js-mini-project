@@ -121,9 +121,13 @@ const Comment = ({
   );
 };
 
+Comment.defaultProps = {
+  own: undefined
+};
+
 Comment.propTypes = {
   comment: PropTypes.objectOf(PropTypes.any).isRequired,
-  own: PropTypes.bool.isRequired,
+  own: PropTypes.bool,
   toggleUpdatedComment: PropTypes.func.isRequired,
   toggleDeletedComment: PropTypes.func.isRequired,
   likeComment: PropTypes.func.isRequired,
